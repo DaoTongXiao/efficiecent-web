@@ -1,0 +1,39 @@
+.container {
+  width: 100%;
+  margin-bottom: 16px;
+  .chat-title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .chat-hello {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      .x-logo {
+        height: 60px;
+        line-height: 40px;
+      }
+      .greetings {
+        font-size: 28px;
+        line-height: 60px;
+        margin-left: 10px;
+        font-weight: 900;
+        line-height: 40px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .description {
+    text-align: center;
+    margin-bottom: 24px;
+    color: rgba(0, 0, 0, 0.65);
+  }
+}
+.feature-cards {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+}

@@ -1,0 +1,53 @@
+export const zhCN = {
+  whatIsTbox: '什么是百宝箱 Tbox.cn?',
+  whatCanTboxDo: '百宝箱可以做什么?',
+  today: '今天',
+  yesterday: '昨天',
+  hotTopics: '最热话题',
+  designGuide: '设计指南',
+  intent: '意图',
+  role: '角色',
+  aiUnderstandsUserNeeds: 'AI 理解用户需求并提供解决方案',
+  aiPublicImage: 'AI 的公众形象',
+  dynamic: '动态',
+  component: '组件',
+  guide: '指南',
+  tutorial: '教程',
+  newConversation: '新会话',
+  rename: '重命名',
+  delete: '删除',
+  requestInProgress: '请求正在进行中，请等待请求完成。',
+  demoButtonNoFunction: '演示按钮，无实际功能',
+  helloAntdXTboxAgent: '你好， 我是 Ant Design X & 百宝箱智能体',
+  antdXTboxDescription:
+    '基于 Ant Design 的 AGI 产品界面解决方案，打造更卓越的智能视觉体验，集成了百宝箱 Tbox.cn 的智能体能力，助力产品设计与开发。',
+  askMeAnything: '向我提问吧',
+  loadingMessage: '加载中💗'
+}
+
+export const enUS = {
+  whatIsTbox: 'What is Tbox.cn?',
+  whatCanTboxDo: 'What can Tbox.cn do?',
+  today: 'Today',
+  yesterday: 'Yesterday',
+  hotTopics: 'Hot Topics',
+  designGuide: 'Design Guide',
+  intent: 'Intent',
+  role: 'Role',
+  aiUnderstandsUserNeeds: 'AI understands user needs and provides solutions',
+  aiPublicImage: 'AI\'s public image',
+  dynamic: 'Dynamic',
+  component: 'Component',
+  guide: 'Guide',
+  tutorial: 'Tutorial',
+  newConversation: 'New Conversation',
+  rename: 'Rename',
+  delete: 'Delete',
+  requestInProgress: 'Request is in progress, please wait for the request to complete.',
+  demoButtonNoFunction: 'Demo button, no actual function',
+  helloAntdXTboxAgent: 'Hello, I am Ant Design X & Tbox Agent',
+  antdXTboxDescription:
+    'An AGI product interface solution based on Ant Design, creating a superior intelligent visual experience, integrating the capabilities of Tbox.cn agents to assist in product design and development.',
+  askMeAnything: 'Ask me anything...',
+  loadingMessage: 'Loading...'
+}
