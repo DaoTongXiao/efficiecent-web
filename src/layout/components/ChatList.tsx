@@ -126,7 +126,7 @@ const ChatList: React.FC<ChatListProps> = ({
           key: id,
           loading: status === 'loading',
           role: role,
-          header: role === RoleEnum.AI ? 'AI' : 'x',
+          header: role === RoleEnum.AI ? 'AI' : '你',
           typing: { step: 2, interval: 50 },
           content: (<Message message={item} styles={styles} />),
           variant: 'filled'

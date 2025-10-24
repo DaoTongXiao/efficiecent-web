@@ -1,8 +1,12 @@
 .container {
-  width: 100%;
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   .chat-title {
     width: 100%;
+    max-width: 800px; // 添加最大宽度以确保在大屏幕上也能居中
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,11 +33,15 @@
     text-align: center;
     margin-bottom: 24px;
     color: rgba(0, 0, 0, 0.65);
+    width: 100%;
+    max-width: 800px; // 与标题保持一致的最大宽度
   }
 }
 .feature-cards {
   display: flex;
   gap: 16px;
   width: 100%;
+  max-width: 800px; // 与主要内容保持一致的最大宽度
   margin-top: 16px;
+  justify-content: center; // 居中对齐卡片
 }
