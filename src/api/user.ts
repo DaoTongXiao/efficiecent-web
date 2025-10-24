@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { getAuthToken } from '@/utils/auth'
 import { ApiResponse } from './types'
-import { OneDataApiResponse } from './onedata'
-
 const api = axios.create({
   baseURL: '/ai-api',
   timeout: 600000,
@@ -11,20 +9,16 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 })
-
-
+type  UserDto = {
+    user_id: string
+    user_name: string
+}
 /**
  * getUserInfo
  * @returns {Promise<ApiResponse>}
  */
-export const getUserInfo = async (): Promise<ApiResponse<{
-    user_id: string
-    user_name: string
-}>> => {
-    const { data } = await api.get<ApiResponse<{
-    user_id: string
-    user_name: string
-}>>('/userinfo')
+export const getUserInfo = async (): Promise<ApiResponse<UserDto>> => {
+    const { data } = await api.get<ApiResponse<UserDto>>('/userinfo')
     return data
 }
 
