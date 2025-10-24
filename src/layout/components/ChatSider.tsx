@@ -1,10 +1,7 @@
 import {
   DeleteOutlined,
   PlusOutlined,
-  ProjectOutlined,
-  DatabaseOutlined,
-  SelectOutlined
-} from '@ant-design/icons'
+  DatabaseOutlined} from '@ant-design/icons'
 import { Conversations } from '@ant-design/x'
 import { Button, List, Tooltip } from 'antd'
 import { useState } from 'react'

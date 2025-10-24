@@ -1,7 +1,7 @@
 import { getAuthToken, isTokenValid } from '@/utils/auth'
 import { createMessage, chatMessage, ApiMessage as Message } from '@/api/message'
 import { useConversationStore } from '@/store'
-import { notification } from 'antd'
+import { App } from 'antd'
 import type { NotificationInstance } from 'antd/es/notification/interface'
 import { useCallback } from 'react'
 /**
@@ -69,7 +69,7 @@ const createMessageObject = (
  * @returns {Object} - Hook return value
  */
 export const useChatSubmission = () => {
-  const [api] = notification.useNotification()
+  const {notification} = App.useApp()
 
   const {
     curConversation,
@@ -83,12 +83,12 @@ export const useChatSubmission = () => {
   const submitMessage = useCallback(
     async (val: string) => {
       if (!curConversation) {
-        api.warning({ message: 'No active conversation. Please select one.' })
+        notification.warning({ message: 'No active conversation. Please select one.' })
         return
       }
 
       const token = getAuthToken()
-      if (!guardSubmission(token, val, api, loading)) {
+      if (!guardSubmission(token, val, notification, loading)) {
         return
       }
 
@@ -169,13 +169,13 @@ export const useChatSubmission = () => {
             errorMsg = 'Authentication issue. Please login again.'
           }
         }
-        api.error({ message: errorMsg })
+        notification.error({ message: errorMsg })
       } finally {
         setLoading(false)
         setInputValue('') // Clear input regardless of success/failure
       }
     },
-    [curConversation, loading, api, setLoading, addMessage, updateMessage, setInputValue]
+    [curConversation, loading, notification, setLoading, addMessage, updateMessage, setInputValue]
   )
 
   return { submitMessage }
