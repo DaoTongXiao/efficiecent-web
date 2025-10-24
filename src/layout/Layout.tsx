@@ -5,8 +5,6 @@ import ChatSider from './components/ChatSider'
 import { zhCN } from '@/locales/locales'
 import { useStyle } from './style'
 import { useConversationStore, useUserStore } from '@/store'
-import { TypeEnum } from '@/config/constant'
-
 import { useChatSubmission } from '@/hooks/useChatSubmission' // 新增
 import { useMessageActions } from '@/hooks/useMessageActions' // 新增
 import { ApiMessage } from '@/api/message'
@@ -28,9 +26,6 @@ const Layout: React.FC = () => {
   const { submitMessage } = useChatSubmission()
   const { handleMessageAction } = useMessageActions()
 
-  // 本地状态（保持最小）
-  const [openDevice, setOpenDevice] = useState(false)
-  const [dateOpen, setDateOpen] = useState(false)
   const [eventType, setEventType] = useState('')
 
   // 改进：监听user_id变化，确保初始化
@@ -54,13 +49,7 @@ const Layout: React.FC = () => {
   const onPromptClick = (key: string) => {
     console.log('onPromptClick', key)
     setEventType(key)
-    if (key === TypeEnum.DailyReport) {
-      setDateOpen(true)
-      setOpenDevice(false)
-    } else {
-      setOpenDevice(true)
-      setDateOpen(false)
-    }
+    console.log('onPromptClick', key)
     // 移除console.log，提升生产DX
   }
 
@@ -89,8 +78,6 @@ const Layout: React.FC = () => {
         <ChatList
           styles={styles}
           messages={useConversationStore((s) => s.messages)} // selector优化，避免全store订阅
-          dateOpen={dateOpen}
-          deviceOpen={openDevice}
           onFooterButtonClick={onFooterButtonClick}
           onPromptClick={onPromptClick}
           onSubmit={onSubmit}

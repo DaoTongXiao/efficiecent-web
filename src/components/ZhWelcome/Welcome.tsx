@@ -21,10 +21,10 @@ export default function WlecomeTitle(_props: WelcomeProps) {
             alt="x Insight"
             className="x-logo"
           />
-          <span className="greetings">你好, 我是你的个人智慧引擎</span>
+          <span className="greetings">你好, 我是你的个人智慧引擎,小智</span>
         </div>
         <div className="description">
-          作为你的智能伙伴, 询问我,了解更多。
+          作为你的智能伙伴, 你可以询问我任何问题, 获取帮助; 有问题,就会有答案。
         </div>
       </div>
     </div>

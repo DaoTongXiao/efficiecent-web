@@ -5,22 +5,22 @@ import { TypeEnum } from '@/config/constant'
 
 const senderPromptsItems: GetProp<typeof Prompts, 'items'> = [
   {
-    key: 'productStatus',
+    key: 'expense',
     description: '智能报销',
     icon: <FireOutlined style={{ color: '#FF4D4F' }} />
   },
   {
-    key: 'batchOverview',
+    key: 'company-rule',
     description: '公司规章制度',
     icon: <ReadOutlined style={{ color: '#1890FF' }} />
   },
   {
-    key: 'waferMapConfig',
+    key: 'system',
     description: '业务系统',
     icon: <ReadOutlined style={{ color: '#722ED1' }} />
   },
   {
-    key: 'dailyReport',
+    key: 'work',
     description: '我的工作',
     icon: <FundOutlined style={{ color: '#722ED1' }} />
   }

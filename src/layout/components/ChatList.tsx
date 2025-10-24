@@ -17,8 +17,6 @@ import { Message } from '@/components/ZhMessage/Message'
 export type ChatListProps = {
   styles: Record<string, string>
   messages: MessageType[]
-  deviceOpen: boolean
-  dateOpen: boolean
   onPromptClick: (type_str: string) => void
   onFooterButtonClick: (key: string, content: React.ReactElement<{ message: ApiMessage }>, info: string) => void
   onSubmit: (val: string) => void
@@ -31,8 +29,6 @@ export type ChatListProps = {
 const ChatList: React.FC<ChatListProps> = ({
   styles,
   messages,
-  deviceOpen,
-  dateOpen,
   onPromptClick,
   onFooterButtonClick
 }) => {
@@ -62,8 +58,8 @@ const ChatList: React.FC<ChatListProps> = ({
    * 显示欢迎界面
    */
   const showWelcome = useCallback(() => {
-      return messages.length === 0 && !deviceOpen && !dateOpen
-  },[deviceOpen, dateOpen, messages])
+      return messages.length === 0
+  },[messages])
 
   /**
    * 排序后的消息列表
