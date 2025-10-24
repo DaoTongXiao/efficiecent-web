@@ -241,6 +241,10 @@ const useConversationStore = create<ConversationState>()(
               state.conversations.unshift(newConv)
               state.curConversation = data.id
             })
+            // 创建新对话后立即加载该对话的消息内容
+            get().getConversationAsync(data.id).catch((error) => {
+              console.error('Failed to load new conversation messages:', error)
+            })
           }
         )
       },

@@ -67,8 +67,8 @@ const ChatSider: React.FC<ChatSiderProps> = ({
           src={ai_logo}
           draggable={false}
           alt="logo"
-          width={24}
-          height={24}
+          width={45}
+          height={45}
         />
         <span>智慧引擎</span>
       </div>

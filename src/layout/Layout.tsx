@@ -100,12 +100,8 @@ const Layout: React.FC = () => {
           eventType={eventType}
           locales={locales}
           loading={loading}
-          deviceOpen={openDevice}
-          dateOpen={dateOpen}
           inputValue={inputValue}
           onSubmit={onSubmit}
-          closeDeviceSelector={() => setOpenDevice(false)}
-          closeDateSelector={() => setDateOpen(false)}
           setInputValue={handleSetInputValue}
           promptItemOnClick={onPromptClick}
         />
