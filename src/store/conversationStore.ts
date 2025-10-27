@@ -2,15 +2,15 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import dayjs from 'dayjs'
 import type { MessageType, Conversation } from '@/types/typing'
-import type { ConversationMeta } from '@/api/conversion'
+import type { ConversationMeta } from '@/api/conversion/conversion'
 import {
   createConversation,
   getConversations,
   getConversation,
   deleteConversation,
   updateConversation
-} from '@/api/conversion'
-import { apiUpdateMessage, type ApiMessage } from '@/api/message'
+} from '@/api/conversion/conversion'
+import { apiUpdateMessage, type ApiMessage } from '@/api/conversion/message'
 
 // 缺失接口定义（基于代码推断，可移到 types 文件）
 interface ApiResponse<T = unknown> {

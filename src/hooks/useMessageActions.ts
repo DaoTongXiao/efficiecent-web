@@ -1,6 +1,6 @@
 import { notification } from 'antd'
 import { getAuthToken, isTokenValid } from '@/utils/auth'
-import { ApiMessage, chatMessage } from '@/api/message'
+import { ApiMessage, chatMessage } from '@/api/conversion/message'
 import { useConversationStore } from '@/store'
 
 export const useMessageActions = () => {

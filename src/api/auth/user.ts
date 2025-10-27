@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { getAuthToken } from '@/utils/auth'
-import { ApiResponse } from './types'
+import { ApiResponse } from '../types'
 const api = axios.create({
-  baseURL: '/ai-api/api',
-  timeout: 600000,
+  baseURL: '/api/v1',
+  timeout: 2000,
   headers: {
     Authorization: getAuthToken(),
     'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ interface RequestUserMapping {
 export const getUserMapping = async (info: RequestUserMapping): Promise<UserMapping> => {
     const { data } = await api<ApiResponse<UserMapping>>({
         method: 'POST',
-        url: '/api/user-mapping',
+        url: '/user-mapping',
         data: info
     })
     return data.data

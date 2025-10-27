@@ -8,7 +8,7 @@ import {
   LikeOutlined,
   ReloadOutlined
 } from '@ant-design/icons'
-import { ApiMessage } from '@/api/message'
+import { ApiMessage } from '@/api/conversion/message'
 import { Avatar } from '@/components/ZhAvatar/Avatar'
 import { RolesType } from '@ant-design/x/es/bubble/BubbleList'
 import { MessageType} from '@/types/typing'

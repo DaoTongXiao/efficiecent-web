@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getAuthToken } from '@/utils/auth'
 const api = axios.create({
-  baseURL: '/ai-api/v1',
+  baseURL: '/api/v1',
   timeout: 600000,
   headers: {
     Authorization: getAuthToken()
@@ -51,44 +51,8 @@ export interface ToolResonse {
   }[]
   msg: string
 }
-/**
- * batchOverview
- * @param request 
- * @returns 
- */
-export const batchOverview = async (request: ToolRequestMeta): Promise<ToolResonse> => {
-  const response = await api.post<ToolResonse>('/v1/batch/overview', request)
-  return response.data
-}
 
-/**
- * wafermapConfig
- * @param request 
- * @returns 
- */
-export const wafermapConfig = async (request: ToolRequestMeta): Promise<ToolResonse> => {
-  const response = await api.post<ToolResonse>('/v1/wafermap/config', request)
-  return response.data
-}
 
-/**
- * productStatus
- * @param request 
- * @returns 
- */
-export const productStatus = async (request: ToolRequestMeta): Promise<ToolResonse> => {
-  const response = await api.post<ToolResonse>('/v1/product/status', request)
-  return response.data
-}
-
-/**
- * 获取device列表
- * @returns
- */
-export const getDeviceList = async () => {
-  const { data } = await api.post<DeviceResponse>('/device')
-  return data
-}
 
 /**
  * 文件上传

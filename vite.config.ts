@@ -26,16 +26,12 @@ export default defineConfig({
       usePolling: true
     },
     proxy: {
-      '/ai-api': {
+      '/api': {
         target: 'http://127.0.0.1:8000',
         // target: 'http://172.18.88.61:8000',
         // target: 'http://172.18.88.141:8000',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/ai-api/, '')
-      },
-      '/datasetapi': {
-        target: 'http://dev01.guwave.com/',
-        changeOrigin: true
       }
     }
   }

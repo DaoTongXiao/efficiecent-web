@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { getAuthToken } from '@/utils/auth'
-import { ApiResponse } from './types'
+import { ApiResponse } from '../types'
 import { ApiMessage } from './message'
 
 const api = axios.create({
-  baseURL: '/ai-api/v1',
+  baseURL: '/api/v1',
   timeout: 600000,
   headers: {
     Authorization: getAuthToken()
@@ -61,7 +61,7 @@ interface ConversationResponse {
 export const createConversation = async (requestData: ConversationMeta): Promise<ApiResponse<ConversationResponse>> => {
     const { data } = await api<ApiResponse<ConversationResponse>>({
         method: 'POST',
-        url: '/api/conversations',
+        url: '/conversations',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -84,7 +84,7 @@ export const getConversations = async (params?: {
 }) => {
     const { data } = await api<ApiResponse<ConversationsResponse>>({
         method: 'GET',
-        url: '/api/conversations',
+        url: '/conversations',
         params
     })
     return data
@@ -103,7 +103,7 @@ export interface ConversationQueryResponse {
 export const getConversation = async (id: string) => {
     const { data } = await api<ApiResponse<ConversationQueryResponse>>({
         method: 'GET',
-        url: `/api/conversations/${id}`
+        url: `/conversations/${id}`
     })
     return data
 }
@@ -117,7 +117,7 @@ export const getConversation = async (id: string) => {
 export const deleteConversation = async (id: string) => {
     const { data } = await api<ApiResponse>({
         method: 'DELETE',
-        url: `/api/conversations/${id}`
+        url: `/conversations/${id}`
     })
     return data
 }
@@ -130,7 +130,7 @@ export const deleteConversation = async (id: string) => {
 export const updateConversation = async (id: string, data: Partial<ConversationMeta>) => {
     await api<ApiResponse>({
         method: 'PUT',
-        url: `/api/conversations/${id}`,
+        url: `/conversations/${id}`,
         data
     })
 }

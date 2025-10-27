@@ -1,10 +1,7 @@
-import { Button, Flex, Space } from 'antd'
+import { Flex } from 'antd'
 import React, { Dispatch, SetStateAction, useCallback } from 'react'
-import { UploadChangeParam, UploadFile } from 'antd/es/upload'
-import { PaperClipOutlined } from '@ant-design/icons'
 import { T } from '@/types/typing'
 import { Sender } from '@ant-design/x' // 假设这是自定义组件
-import SenderHeader from './SenderHeader'
 import { ZhPrompts } from '@/components/ZhPrompts/ZhPrompts'
 // Props 接口保持不变，但可以考虑进一步细化（如 optional props）
 export type ChatSenderProps = {
@@ -32,9 +29,6 @@ const ChatSender: React.FC<ChatSenderProps> = ({
   promptItemOnClick
 }) => {
   // 文件变化处理（简化，无需额外逻辑）
-  const handleFileChange = useCallback((info: UploadChangeParam<UploadFile<unknown>>) => {
-    console.log('file', info) // 建议替换为实际上传逻辑
-  }, [])
 
 
   // 提交处理（简化：直接调用 props）

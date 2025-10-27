@@ -1,5 +1,5 @@
 import { getAuthToken, isTokenValid } from '@/utils/auth'
-import { createMessage, chatMessage, ApiMessage as Message } from '@/api/message'
+import { createMessage, chatMessage, ApiMessage as Message } from '@/api/conversion/message'
 import { useConversationStore } from '@/store'
 import { App } from 'antd'
 import type { NotificationInstance } from 'antd/es/notification/interface'

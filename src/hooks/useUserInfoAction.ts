@@ -1,4 +1,4 @@
-import { getUserInfo, getUserMapping } from '@/api/user'
+import { getUserInfo, getUserMapping } from '@/api/auth/user'
 import { useUserStore } from '@/store'
 import { getAuthToken } from '@/utils/auth'
 import { useRequest } from 'ahooks'

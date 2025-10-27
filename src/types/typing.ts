@@ -1,4 +1,4 @@
-import { ApiMessage } from '@/api/message'
+import { ApiMessage } from '@/api/conversion/message'
 import { TypeEnum } from '@/config/constant'
 
 import { Dispatch, RefObject, ReactNode, SetStateAction } from 'react'

@@ -1,10 +1,10 @@
 
 import axios from 'axios'
 import { getAuthToken } from '@/utils/auth'
-import { ApiResponse, Report } from './types'
+import { ApiResponse, Report } from '../types'
 
 const api = axios.create({
-  baseURL: '/ai-api/v1',
+  baseURL: '/api/v1',
   timeout: 600000,
   headers: {
     Authorization: getAuthToken()
@@ -65,7 +65,7 @@ export interface CreateMessage {
  * @returns {ApiResponse<ApiMessage>}
  */
 export const createMessage = async (request: CreateMessage): Promise<ApiResponse<ApiMessage>> => { 
-    const { data } = await api.post<ApiResponse<ApiMessage>>('/api/messages', request)
+    const { data } = await api.post<ApiResponse<ApiMessage>>('/messages', request)
     return data
 } 
 
@@ -75,7 +75,7 @@ export const createMessage = async (request: CreateMessage): Promise<ApiResponse
  * @returns 
  */
 export const chatMessage = async (request: CreateMessage): Promise<ApiResponse<ApiMessage>> => {
-    const { data } = await api.post<ApiResponse<ApiMessage>>('/api/invoke', request)
+    const { data } = await api.post<ApiResponse<ApiMessage>>('/invoke', request)
     return data
 }
 
@@ -86,6 +86,6 @@ export const chatMessage = async (request: CreateMessage): Promise<ApiResponse<A
  * @returns {ApiResponse<ApiMessage>}
  */
 export const apiUpdateMessage = async (id: string, request:Partial<ApiMessage> ): Promise<ApiResponse<ApiMessage>> => {
-  const { data } = await api.put<ApiResponse<ApiMessage>>(`/api/messages/${id}`, request)
+  const { data } = await api.put<ApiResponse<ApiMessage>>(`/messages/${id}`, request)
   return data
 }

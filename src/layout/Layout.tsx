@@ -7,7 +7,7 @@ import { useStyle } from './style'
 import { useConversationStore, useUserStore } from '@/store'
 import { useChatSubmission } from '@/hooks/useChatSubmission' // 新增
 import { useMessageActions } from '@/hooks/useMessageActions' // 新增
-import { ApiMessage } from '@/api/message'
+import { ApiMessage } from '@/api/conversion/message'
 
 const locales = zhCN
 

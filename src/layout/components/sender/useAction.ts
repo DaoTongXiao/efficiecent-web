@@ -1,11 +1,11 @@
 
-import { ApiMessage, createMessage } from '@/api/message'
+import { ApiMessage, createMessage } from '@/api/conversion/message'
 import { AxiosError } from 'axios'
 import { useCallback } from 'react'
 import { useConversationStore } from '@/store'
 
 // 公共消息动作hook：提取重复逻辑，提供核心工具
-const useMessageActions = () => {
+export const useMessageActions = () => {
   const { curConversation, updateMessage, addMessage } = useConversationStore()
 
   // 创建用户消息（通用）

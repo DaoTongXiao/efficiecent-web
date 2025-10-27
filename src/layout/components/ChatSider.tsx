@@ -1,15 +1,17 @@
 import {
   DeleteOutlined,
   PlusOutlined,
-  DatabaseOutlined} from '@ant-design/icons'
+  DatabaseOutlined,
+  EditOutlined} from '@ant-design/icons'
 import { Conversations } from '@ant-design/x'
-import { Button, List, Tooltip } from 'antd'
-import { useState } from 'react'
+import { Button, List, Tooltip, Modal, Form, Input, message } from 'antd'
+import { useState, useEffect } from 'react'
 import React from 'react'
 
 import { Conversation, T } from '@/types/typing'
 import ai_logo from '@/assets/ai.png'
-import { useConversationStore, useUserStore } from '@/store'
+import { useConversationStore, useUserStore, useKnowledgeStore } from '@/store'
+import { Knowledge } from '@/api/knowledges'
 
 interface ChatSiderProps {
   styles: Record<string, string>
@@ -24,9 +26,69 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   conversations,
   curConversation
 }) => {
-  const {createConversationAsync, getConversationAsync, deleteConversationAsync} = useConversationStore()
+  const {createConversationAsync,setCurConversation, getConversationAsync, deleteConversationAsync} = useConversationStore()
   const { user_info } = useUserStore()
+  const { knowledges, fetchKnowledges, createKnowledgeAsync, updateKnowledgeAsync } = useKnowledgeStore()
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] = useState<string>('1')
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [editingKnowledge, setEditingKnowledge] = useState<Knowledge | null>(null)
+  const [form] = Form.useForm()
+
+  // 初始化时获取知识库列表
+  useEffect(() => {
+    fetchKnowledges()
+  }, [])
+
+  // 处理创建知识库
+  const handleCreateKnowledge = () => {
+    setEditingKnowledge(null)
+    form.resetFields()
+    setIsModalVisible(true)
+  }
+
+  // 处理编辑知识库
+  const handleEditKnowledge = (knowledge: Knowledge) => {
+    setEditingKnowledge(knowledge)
+    form.setFieldsValue({
+      title: knowledge.name,
+      description: knowledge.description
+    })
+    setIsModalVisible(true)
+  }
+
+  // 处理Modal确认
+  const handleModalOk = async () => {
+    try {
+      const values = await form.validateFields()
+      const knowledgeData = {
+        name: values.title,
+        description: values.description,
+        created_by: String(user_info.user_id || ''),
+        updated_by: String(user_info.user_id || '')
+      }
+
+      if (editingKnowledge) {
+        // 更新知识库
+        await updateKnowledgeAsync(editingKnowledge.id, knowledgeData)
+        message.success('知识库更新成功')
+      } else {
+        // 创建知识库
+        await createKnowledgeAsync(knowledgeData)
+        message.success('知识库创建成功')
+      }
+
+      setIsModalVisible(false)
+      form.resetFields()
+    } catch (error) {
+      console.error('操作失败:', error)
+    }
+  }
+
+  // 处理Modal取消
+  const handleModalCancel = () => {
+    setIsModalVisible(false)
+    form.resetFields()
+  }
   
   /**
    * 创建会话
@@ -53,11 +115,13 @@ const ChatSider: React.FC<ChatSiderProps> = ({
 
   /**
    * handleActiveChange
-   * @param val 
+   * @param val
    */
-  const handleActiveChange = async (val: string) => {
-      await getConversationAsync(val)
-    }
+   const handleActiveChange = async (val: string) => {
+       await getConversationAsync(val)
+       // 切换当前对话
+       setCurConversation(val)
+     }
     
   return (
     <div className={styles.sider}>
@@ -92,27 +156,37 @@ const ChatSider: React.FC<ChatSiderProps> = ({
             size="small"
             icon={<PlusOutlined />}
             onClick={() => {
-              // TODO: 实现创建知识库逻辑
-              console.log('创建知识库')
+              // 创建知识库逻辑
+              handleCreateKnowledge()
             }}
             title="创建知识库"
           />
         </div>
         <List
           size="small"
-          dataSource={[
-            { key: '1', name: '通用知识库', description: '包含基础知识和常见问题' },
-            { key: '2', name: '技术文档库', description: '编程和技术相关文档' },
-            { key: '3', name: '业务知识库', description: '业务相关知识和资料' }
-          ]}
+          dataSource={knowledges}
           renderItem={(item) => {
-            const isSelected = selectedKnowledgeBase === item.key
+            const isSelected = selectedKnowledgeBase === item.id
+            const knowledge = knowledges?.find(k => k.id === item.id)
              return (<List.Item
               className={`${styles.knowledgeItem} ${isSelected ? 'selected' : ''}`}
               onClick={() => {
-                setSelectedKnowledgeBase(item.key)
+                setSelectedKnowledgeBase(item.id)
                 console.log('选择知识库:', item.name)
               }}
+              actions={knowledge ? [
+                <Button
+                  key="edit"
+                  type="text"
+                  size="small"
+                  icon={<EditOutlined />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleEditKnowledge(knowledge)
+                  }}
+                  title="编辑知识库"
+                />
+              ] : []}
             >
               <List.Item.Meta
                 avatar={<DatabaseOutlined />}
@@ -154,6 +228,43 @@ const ChatSider: React.FC<ChatSiderProps> = ({
           ]
         })}
       />
+
+      {/* 🌟 知识库编辑Modal */}
+      <Modal
+        title={editingKnowledge ? '编辑知识库' : '创建知识库'}
+        open={isModalVisible}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        okText={editingKnowledge ? '更新' : '创建'}
+        cancelText="取消"
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{
+            title: '',
+            description: ''
+          }}
+        >
+          <Form.Item
+            name="title"
+            label="知识库名称"
+            rules={[{ required: true, message: '请输入知识库名称' }]}
+          >
+            <Input placeholder="请输入知识库名称" />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="知识库描述"
+            rules={[{ required: true, message: '请输入知识库描述' }]}
+          >
+            <Input.TextArea
+              placeholder="请输入知识库描述"
+              rows={3}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }

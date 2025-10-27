@@ -1,5 +1,5 @@
 import { MessageType } from '@/types/typing'
-import { ToolPart } from '@/api/message'
+import { ToolPart } from '@/api/conversion/message'
 
 import { BatchResult } from './BatchResult'
 import { MarkdownMessage } from './MarkdownMessage'
