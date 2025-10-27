@@ -4,7 +4,7 @@ import { getAuthToken } from '@/utils/auth'
 import { ApiResponse, Report } from './types'
 
 const api = axios.create({
-  baseURL: '/ai-api',
+  baseURL: '/ai-api/v1',
   timeout: 600000,
   headers: {
     Authorization: getAuthToken()

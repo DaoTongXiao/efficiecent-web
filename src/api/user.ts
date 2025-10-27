@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getAuthToken } from '@/utils/auth'
 import { ApiResponse } from './types'
 const api = axios.create({
-  baseURL: '/ai-api',
+  baseURL: '/ai-api/api',
   timeout: 600000,
   headers: {
     Authorization: getAuthToken(),

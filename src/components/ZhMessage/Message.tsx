@@ -1,9 +1,7 @@
 import { MessageType } from '@/types/typing'
 import { ToolPart } from '@/api/message'
 
-import { ReportDisplay } from './ReportDisplay'
 import { BatchResult } from './BatchResult'
-import { JumpLink } from './JumpLink'
 import { MarkdownMessage } from './MarkdownMessage'
 
 type Conditions = {
@@ -57,23 +55,6 @@ const renderToolPart = (part: ToolPart, index: number, styles?: Record<string, s
       }
       return <BatchResult key={index} body={objBody} />
     }
-    case 'link': {
-      let linkParams: unknown
-      try {
-        linkParams = typeof body === 'string' ? JSON.parse(body) : body
-      } catch {
-        linkParams = body
-      }
-      // 类型断言更安全：假设 params 符合 Conditions 形状
-      return (
-        <JumpLink
-          key={index}
-          label="跳转"
-          type="YMS"
-          params={linkParams as Conditions} // 可以进一步用 zod 或 runtime 验证
-        />
-      )
-    }
     case 'str':
     default:
       return <p key={index}>{body ?? ''}</p>
@@ -115,14 +96,6 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
       return <MarkdownMessage content={parts} styles={styles} />
     case 'obj':
       return <BatchResult body={parts} />
-    case 'link': {
-      // 类型守卫：确保 params 符合 Conditions
-      const params = parts as unknown as Conditions // 假设上游已验证；否则用 zod 运行时检查
-      return <JumpLink label="跳转YMS分析" type="YMS" params={params} />
-    }
-    case 'report':
-      // console.log('report parts:', parts)
-      return parts?.length > 0 ? <ReportDisplay message={message} /> : <p>暂无报表</p>
     case 'product_status':
       return renderParts(parts, styles, true) // ToolMode: true
     default:

@@ -4,7 +4,7 @@ import { ApiResponse } from './types'
 import { ApiMessage } from './message'
 
 const api = axios.create({
-  baseURL: '/ai-api',
+  baseURL: '/ai-api/v1',
   timeout: 600000,
   headers: {
     Authorization: getAuthToken()
