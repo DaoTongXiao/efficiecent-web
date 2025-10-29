@@ -19,7 +19,8 @@ export interface ToolPart {
 type Parts =  string[] | Report[] | ToolPart[]; 
 
 export interface ApiMessage {
-  id: string;                        // 消息 ID (UUID)
+  id: string;     
+  knowledge_id?: string               
   conversation_id: string;           // 会话 ID
   role: string;                      // 作者角色
   name?: string;                     // 作者名称
@@ -44,6 +45,7 @@ export interface ApiMessage {
 
 export interface CreateMessage {
   conversation_id: string;           // 会话 ID
+  knowledge_id?: string   
   role: string;                      // 作者角色
   name?: string;                     // 作者名称
   author_metadata?: {

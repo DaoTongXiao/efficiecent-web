@@ -1,6 +1,6 @@
 import { getAuthToken, isTokenValid } from '@/utils/auth'
 import { createMessage, chatMessage, ApiMessage as Message } from '@/api/conversion/message'
-import { useConversationStore } from '@/store'
+import { useConversationStore, useKnowledgeStore } from '@/store'
 import { App } from 'antd'
 import type { NotificationInstance } from 'antd/es/notification/interface'
 import { useCallback } from 'react'
@@ -70,7 +70,6 @@ const createMessageObject = (
  */
 export const useChatSubmission = () => {
   const {notification} = App.useApp()
-
   const {
     curConversation,
     loading,
@@ -80,13 +79,15 @@ export const useChatSubmission = () => {
     setInputValue
   } = useConversationStore()
 
+  const { curKnowledge  } = useKnowledgeStore()
+
   const submitMessage = useCallback(
     async (val: string) => {
       if (!curConversation) {
         notification.warning({ message: 'No active conversation. Please select one.' })
         return
       }
-
+      // console.log('curKnowledge', curKnowledge)
       const token = getAuthToken()
       if (!guardSubmission(token, val, notification, loading)) {
         return
@@ -97,10 +98,10 @@ export const useChatSubmission = () => {
 
       try {
         setLoading(true)
-
         // Create and add user message
         const userMsg = await createMessage({
           conversation_id: curConversation,
+          knowledge_id: curKnowledge?.id,
           role: 'user',
           status: 'success',
           content_type: 'text',
@@ -134,6 +135,7 @@ export const useChatSubmission = () => {
         // Call AI API (assuming it triggers response with user input)
         const aiResponse = await chatMessage({
           conversation_id: curConversation,
+          knowledge_id: curKnowledge?.id,
           role: 'ai',
           status: 'success',
           content_type: 'text',
@@ -156,6 +158,7 @@ export const useChatSubmission = () => {
           ),
           false
         )
+        setInputValue('') // Clear input regardless of success/failure
       } catch (error) {
         // Rollback: Remove temporary AI message on any failure
         updateMessage(tempAiId, null, false) // Remove temp message without DB update
@@ -172,10 +175,9 @@ export const useChatSubmission = () => {
         notification.error({ message: errorMsg })
       } finally {
         setLoading(false)
-        setInputValue('') // Clear input regardless of success/failure
       }
     },
-    [curConversation, loading, notification, setLoading, addMessage, updateMessage, setInputValue]
+    [curConversation, loading, notification,curKnowledge, setLoading, addMessage, updateMessage, setInputValue]
   )
 
   return { submitMessage }

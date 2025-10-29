@@ -28,7 +28,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
 }) => {
   const {createConversationAsync,setCurConversation, getConversationAsync, deleteConversationAsync} = useConversationStore()
   const { user_info } = useUserStore()
-  const { knowledges, fetchKnowledges, createKnowledgeAsync, updateKnowledgeAsync } = useKnowledgeStore()
+  const { knowledges, fetchKnowledges, createKnowledgeAsync, updateKnowledgeAsync,setCurKnowledge } = useKnowledgeStore()
   const [selectedKnowledgeBase, setSelectedKnowledgeBase] = useState<string>('1')
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingKnowledge, setEditingKnowledge] = useState<Knowledge | null>(null)
@@ -172,6 +172,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
               className={`${styles.knowledgeItem} ${isSelected ? 'selected' : ''}`}
               onClick={() => {
                 setSelectedKnowledgeBase(item.id)
+                setCurKnowledge(item)
                 console.log('选择知识库:', item.name)
               }}
               actions={knowledge ? [
