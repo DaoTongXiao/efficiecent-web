@@ -1,12 +1,13 @@
 import { notification } from 'antd'
 import { getAuthToken, isTokenValid } from '@/utils/auth'
-import { ApiMessage, chatMessage } from '@/api/conversion/message'
-import { useConversationStore } from '@/store'
+import { ApiMessage, chatMessage, instertKnowledge } from '@/api/conversion/message'
+import { useConversationStore, useKnowledgeStore, useUserStore } from '@/store'
 
 export const useMessageActions = () => {
    const [api] = notification.useNotification()
 
   const { messages, updateMessage } = useConversationStore() // selector只取需要的
+
 
   const handleMessageAction = async (
     key: string,
@@ -24,6 +25,20 @@ export const useMessageActions = () => {
       updateMessage(messageId, { ...currentMessage, weight: newWeight }, true)
     } else if (key === 'reload') {
       await handleReload(currentMessage, messageId)
+    } else if (key === 'addVector') {
+      const knowledge = useKnowledgeStore.getState().curKnowledge
+      const user_id = useUserStore.getState().user_info?.user_id
+      if(knowledge){
+       await instertKnowledge({
+        collection_name: `k_${knowledge.id?.replace(/-/g, '_')}`,
+        content: currentMessage.parts[0]?.toString(),
+        meatadata: {
+          conversation_id: currentMessage.conversation_id,
+          message_id: currentMessage.id,
+          user_id: user_id as string
+        }
+       })
+      }
     }
   }
 

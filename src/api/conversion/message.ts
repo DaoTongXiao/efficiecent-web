@@ -61,6 +61,14 @@ export interface CreateMessage {
   parent?: string;                   // 父消息 ID
 }
 
+
+export interface KnowledageInsertDto {
+  collection_name: string;
+  content: string;
+  meatadata?: {
+    [key: string]: string;
+  };
+}
 /**
  * createMessage
  * @param request 
@@ -89,5 +97,15 @@ export const chatMessage = async (request: CreateMessage): Promise<ApiResponse<A
  */
 export const apiUpdateMessage = async (id: string, request:Partial<ApiMessage> ): Promise<ApiResponse<ApiMessage>> => {
   const { data } = await api.put<ApiResponse<ApiMessage>>(`/messages/${id}`, request)
+  return data
+}
+
+/**
+ * insertKnowledge
+ * @param request 
+ * @returns {ApiResponse<ApiMessage>}
+ */
+export const instertKnowledge = async (request: KnowledageInsertDto): Promise<ApiResponse<{success: boolean}>> => {
+  const { data } = await api.post<ApiResponse<{success: boolean}>>('/milvus/insert', request)
   return data
 }

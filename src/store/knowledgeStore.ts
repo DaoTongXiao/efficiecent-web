@@ -83,7 +83,7 @@ const useKnowledgeStore = create<KnowledgeState>()(
           (data) => {
             // console.log('knowledges:', data)
             const knowledges = Array.isArray(data) ? data : data.knowledges || []
-            set({ knowledges })
+            set({ knowledges, curKnowledge: knowledges.length > 0 ? knowledges[0] : null })
           }
         )
       },

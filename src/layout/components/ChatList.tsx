@@ -6,7 +6,8 @@ import { RoleEnum } from '@/config/constant'
 import {
   DislikeOutlined,
   LikeOutlined,
-  ReloadOutlined
+  ReloadOutlined,
+  StarOutlined
 } from '@ant-design/icons'
 import { ApiMessage } from '@/api/conversion/message'
 import { Avatar } from '@/components/ZhAvatar/Avatar'
@@ -85,6 +86,12 @@ const ChatList: React.FC<ChatListProps> = ({
         const weight = message?.weight ?? 0
         return (
           <div style={{ display: 'flex' }}>
+            <Button
+              type="text"
+              size="small"
+              icon={<StarOutlined />}
+              onClick={() => onFooterButtonClick('addVector', content, info.key as string)}
+            />
             <Button
               type="text"
               size="small"

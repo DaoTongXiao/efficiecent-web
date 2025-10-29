@@ -28,8 +28,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
 }) => {
   const {createConversationAsync,setCurConversation, getConversationAsync, deleteConversationAsync} = useConversationStore()
   const { user_info } = useUserStore()
-  const { knowledges, fetchKnowledges, createKnowledgeAsync, updateKnowledgeAsync,setCurKnowledge } = useKnowledgeStore()
-  const [selectedKnowledgeBase, setSelectedKnowledgeBase] = useState<string>('1')
+  const { knowledges,curKnowledge, fetchKnowledges, createKnowledgeAsync, updateKnowledgeAsync,setCurKnowledge } = useKnowledgeStore()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingKnowledge, setEditingKnowledge] = useState<Knowledge | null>(null)
   const [form] = Form.useForm()
@@ -166,16 +165,14 @@ const ChatSider: React.FC<ChatSiderProps> = ({
           size="small"
           dataSource={knowledges}
           renderItem={(item) => {
-            const isSelected = selectedKnowledgeBase === item.id
-            const knowledge = knowledges?.find(k => k.id === item.id)
+            const isSelected = curKnowledge?.id === item.id
              return (<List.Item
               className={`${styles.knowledgeItem} ${isSelected ? 'selected' : ''}`}
               onClick={() => {
-                setSelectedKnowledgeBase(item.id)
                 setCurKnowledge(item)
                 console.log('选择知识库:', item.name)
               }}
-              actions={knowledge ? [
+              actions={curKnowledge ? [
                 <Button
                   key="edit"
                   type="text"
@@ -183,7 +180,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
                   icon={<EditOutlined />}
                   onClick={(e) => {
                     e.stopPropagation()
-                    handleEditKnowledge(knowledge)
+                    handleEditKnowledge(curKnowledge)
                   }}
                   title="编辑知识库"
                 />
