@@ -100,6 +100,10 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content, style
                 {children}
               </code>
             )
+          },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          img({ node, ...props }: any) {
+            return <img {...props} style={{ maxWidth: '550px', height: 'auto' }} />
           }
         }}
       >
