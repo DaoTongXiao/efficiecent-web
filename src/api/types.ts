@@ -12,3 +12,19 @@ export interface Report {
   create_time: string | null
   additional_info: Record<string, unknown>
 }
+
+// 助手相关类型定义
+export interface Assistant {
+  id: string;
+  name: string;
+  description: string;
+  prompt: string;
+}
+
+export interface AssistantRequest {
+  name: string;
+  description: string;
+  prompt_text: string;
+  created_by: string;
+  updated_by: string;
+}

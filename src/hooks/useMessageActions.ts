@@ -39,6 +39,7 @@ export const useMessageActions = () => {
           user_id: user_id as string
         }
        })
+       updateMessage(messageId, { ...currentMessage, collect: 1 }, true)
       }
     }
   }

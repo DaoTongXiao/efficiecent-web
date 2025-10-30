@@ -1,17 +1,18 @@
-import {
-  DeleteOutlined,
-  PlusOutlined,
-  DatabaseOutlined,
-  EditOutlined} from '@ant-design/icons'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { Conversations } from '@ant-design/x'
-import { Button, List, Tooltip, Modal, Form, Input, message } from 'antd'
+import { Button, message } from 'antd'
 import { useState, useEffect } from 'react'
 import React from 'react'
 
 import { Conversation, T } from '@/types/typing'
 import ai_logo from '@/assets/ai.png'
-import { useConversationStore, useUserStore, useKnowledgeStore } from '@/store'
+import { useConversationStore, useUserStore, useKnowledgeStore, useAssistantStore } from '@/store'
 import { Knowledge } from '@/api/knowledges'
+import { Assistant } from '@/api/assistants'
+import KnowledgeManagement from './KnowledgeManagement'
+import AssistantManagement from './AssistantManagement'
+import KnowledgeModal from './KnowledgeModal'
+import AssistantModal from './AssistantModal'
 
 interface ChatSiderProps {
   styles: Record<string, string>
@@ -29,64 +30,120 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   const {createConversationAsync,setCurConversation, getConversationAsync, deleteConversationAsync} = useConversationStore()
   const { user_info } = useUserStore()
   const { knowledges,curKnowledge, fetchKnowledges, createKnowledgeAsync, updateKnowledgeAsync,setCurKnowledge } = useKnowledgeStore()
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const { assistants,curAssistant, fetchAssistants, createAssistantAsync, updateAssistantAsync,setCurAssistant } = useAssistantStore()
+  const [knowledgeModalVisible, setKnowledgeModalVisible] = useState(false)
+  const [assistantModalVisible, setAssistantModalVisible] = useState(false)
   const [editingKnowledge, setEditingKnowledge] = useState<Knowledge | null>(null)
-  const [form] = Form.useForm()
+  const [editingAssistant, setEditingAssistant] = useState<Assistant | null>(null)
+  const [knowledgeExpanded, setKnowledgeExpanded] = useState(true)
+  const [assistantExpanded, setAssistantExpanded] = useState(true)
 
-  // 初始化时获取知识库列表
+  // 初始化时获取知识库列表和助手列表
   useEffect(() => {
     fetchKnowledges()
+    fetchAssistants()
   }, [])
 
   // 处理创建知识库
   const handleCreateKnowledge = () => {
     setEditingKnowledge(null)
-    form.resetFields()
-    setIsModalVisible(true)
+    setKnowledgeModalVisible(true)
   }
 
   // 处理编辑知识库
   const handleEditKnowledge = (knowledge: Knowledge) => {
     setEditingKnowledge(knowledge)
-    form.setFieldsValue({
-      title: knowledge.name,
-      description: knowledge.description
-    })
-    setIsModalVisible(true)
+    setKnowledgeModalVisible(true)
   }
 
-  // 处理Modal确认
-  const handleModalOk = async () => {
-    try {
-      const values = await form.validateFields()
-      const knowledgeData = {
-        name: values.title,
-        description: values.description,
-        created_by: String(user_info.user_id || ''),
-        updated_by: String(user_info.user_id || '')
-      }
+  // 处理创建助手
+  const handleCreateAssistant = () => {
+    setEditingAssistant(null)
+    setAssistantModalVisible(true)
+  }
 
+  // 处理编辑助手
+  const handleEditAssistant = (assistant: Assistant) => {
+    setEditingAssistant(assistant)
+    setAssistantModalVisible(true)
+  }
+
+  // 处理知识库Modal确认
+  const handleKnowledgeModalOk = async (values: { title: string; description: string }) => {
+    try {
       if (editingKnowledge) {
         // 更新知识库
+        const knowledgeData = {
+          name: values.title,
+          description: values.description,
+          created_by: String(user_info.user_id || ''),
+          updated_by: String(user_info.user_id || '')
+        }
         await updateKnowledgeAsync(editingKnowledge.id, knowledgeData)
         message.success('知识库更新成功')
       } else {
         // 创建知识库
+        const knowledgeData = {
+          name: values.title,
+          description: values.description,
+          created_by: String(user_info.user_id || ''),
+          updated_by: String(user_info.user_id || '')
+        }
         await createKnowledgeAsync(knowledgeData)
         message.success('知识库创建成功')
       }
 
-      setIsModalVisible(false)
-      form.resetFields()
+      setKnowledgeModalVisible(false)
+      setEditingKnowledge(null)
     } catch (error) {
       console.error('操作失败:', error)
     }
   }
 
-  // 处理Modal取消
-  const handleModalCancel = () => {
-    setIsModalVisible(false)
-    form.resetFields()
+  // 处理助手Modal确认
+  const handleAssistantModalOk = async (values: { title: string; description: string; prompt: string }) => {
+    try {
+      if (editingAssistant) {
+        // 更新助手
+        const assistantData = {
+          name: values.title,
+          description: values.description,
+          prompt_text: values.prompt,
+          created_by: String(user_info.user_id || ''),
+          updated_by: String(user_info.user_id || '')
+        }
+        await updateAssistantAsync(editingAssistant.id, assistantData)
+        message.success('助手更新成功')
+      } else {
+        // 创建助手
+        const assistantData = {
+          name: values.title,
+          description: values.description,
+          prompt_text: values.prompt,
+          created_by: String(user_info.user_id || ''),
+          updated_by: String(user_info.user_id || '')
+        }
+        await createAssistantAsync(assistantData)
+        message.success('助手创建成功')
+      }
+
+      setAssistantModalVisible(false)
+      setEditingAssistant(null)
+    } catch (error) {
+      console.error('操作失败:', error)
+    }
+  }
+
+  // 处理知识库Modal取消
+  const handleKnowledgeModalCancel = () => {
+    setKnowledgeModalVisible(false)
+    setEditingKnowledge(null)
+  }
+
+  // 处理助手Modal取消
+  const handleAssistantModalCancel = () => {
+    setAssistantModalVisible(false)
+    setEditingAssistant(null)
   }
   
   /**
@@ -132,6 +189,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
           alt="logo"
           width={45}
           height={45}
+          style={{ borderRadius: '50%' }}
         />
         <span>智慧引擎</span>
       </div>
@@ -147,62 +205,34 @@ const ChatSider: React.FC<ChatSiderProps> = ({
       </Button>
 
       {/* 🌟 知识库管理 */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h4>知识库管理</h4>
-          <Button
-            type="text"
-            size="small"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              // 创建知识库逻辑
-              handleCreateKnowledge()
-            }}
-            title="创建知识库"
-          />
-        </div>
-        <List
-          size="small"
-          dataSource={knowledges}
-          renderItem={(item) => {
-            const isSelected = curKnowledge?.id === item.id
-             return (<List.Item
-              className={`${styles.knowledgeItem} ${isSelected ? 'selected' : ''}`}
-              onClick={() => {
-                setCurKnowledge(item)
-                console.log('选择知识库:', item.name)
-              }}
-              actions={curKnowledge ? [
-                <Button
-                  key="edit"
-                  type="text"
-                  size="small"
-                  icon={<EditOutlined />}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleEditKnowledge(curKnowledge)
-                  }}
-                  title="编辑知识库"
-                />
-              ] : []}
-            >
-              <List.Item.Meta
-                avatar={<DatabaseOutlined />}
-                title={
-                  <Tooltip title={item.name}>
-                    <div>{item.name}</div>
-                  </Tooltip>
-                }
-                description={
-                  <Tooltip title={item.description}>
-                    <div>{item.description}</div>
-                  </Tooltip>
-                }
-              />
-            </List.Item>)}
-          }
-        />
-      </div>
+      <KnowledgeManagement
+        styles={styles}
+        knowledges={knowledges}
+        curKnowledge={curKnowledge}
+        expanded={knowledgeExpanded}
+        onToggleExpanded={() => setKnowledgeExpanded(!knowledgeExpanded)}
+        onCreate={handleCreateKnowledge}
+        onEdit={handleEditKnowledge}
+        onSelect={(knowledge) => {
+          setCurKnowledge(knowledge)
+          console.log('选择知识库:', knowledge.name)
+        }}
+      />
+
+      {/* 🌟 助手管理 */}
+      <AssistantManagement
+        styles={styles}
+        assistants={assistants}
+        curAssistant={curAssistant}
+        expanded={assistantExpanded}
+        onToggleExpanded={() => setAssistantExpanded(!assistantExpanded)}
+        onCreate={handleCreateAssistant}
+        onEdit={handleEditAssistant}
+        onSelect={(assistant) => {
+          setCurAssistant(assistant)
+          console.log('选择助手:', assistant.name)
+        }}
+      />
 
       {/* 🌟 会话管理 */}
       <Conversations
@@ -227,42 +257,21 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         })}
       />
 
-      {/* 🌟 知识库编辑Modal */}
-      <Modal
-        title={editingKnowledge ? '编辑知识库' : '创建知识库'}
-        open={isModalVisible}
-        onOk={handleModalOk}
-        onCancel={handleModalCancel}
-        okText={editingKnowledge ? '更新' : '创建'}
-        cancelText="取消"
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          initialValues={{
-            title: '',
-            description: ''
-          }}
-        >
-          <Form.Item
-            name="title"
-            label="知识库名称"
-            rules={[{ required: true, message: '请输入知识库名称' }]}
-          >
-            <Input placeholder="请输入知识库名称" />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="知识库描述"
-            rules={[{ required: true, message: '请输入知识库描述' }]}
-          >
-            <Input.TextArea
-              placeholder="请输入知识库描述"
-              rows={3}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      {/* 🌟 知识库Modal */}
+      <KnowledgeModal
+        visible={knowledgeModalVisible}
+        editingKnowledge={editingKnowledge}
+        onOk={handleKnowledgeModalOk}
+        onCancel={handleKnowledgeModalCancel}
+      />
+
+      {/* 🌟 助手Modal */}
+      <AssistantModal
+        visible={assistantModalVisible}
+        editingAssistant={editingAssistant}
+        onOk={handleAssistantModalOk}
+        onCancel={handleAssistantModalCancel}
+      />
     </div>
   )
 }
