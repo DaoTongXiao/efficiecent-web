@@ -27,6 +27,7 @@ export interface ApiMessage {
   author_metadata?: {
     [key: string]: string;
   };             // 作者元数据 (JSON)
+  collect?: number;
   create_time?: string;                // 创建时间
   update_time?: string;                // 更新时间
   content_type: string;              // 内容类型
@@ -64,6 +65,7 @@ export interface CreateMessage {
 
 export interface KnowledageInsertDto {
   collection_name: string;
+  message_id: string
   content: string;
   meatadata?: {
     [key: string]: string;

@@ -31,6 +31,7 @@ export const useMessageActions = () => {
       if(knowledge){
        await instertKnowledge({
         collection_name: `k_${knowledge.id?.replace(/-/g, '_')}`,
+        message_id: messageId,
         content: currentMessage.parts[0]?.toString(),
         meatadata: {
           conversation_id: currentMessage.conversation_id,

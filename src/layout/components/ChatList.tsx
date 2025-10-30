@@ -89,19 +89,21 @@ const ChatList: React.FC<ChatListProps> = ({
             <Button
               type="text"
               size="small"
-              icon={<StarOutlined />}
-              onClick={() => onFooterButtonClick('addVector', content, info.key as string)}
-            />
-            <Button
-              type="text"
-              size="small"
               icon={<ReloadOutlined />}
               onClick={() => onFooterButtonClick('reload',content, info.key as string)}
             />
             <Button
               type="text"
               size="small"
-              icon={weight > 0 ? <LikeOutlined style={{ color: '#ff18a6ff' }} /> : <LikeOutlined />}
+              disabled={Boolean(message?.collect && message.collect > 0)}
+              icon={<StarOutlined style={{ color: message?.collect && message.collect > 0 ? '#1890ff' : undefined }} />}
+              onClick={() => onFooterButtonClick('addVector', content, info.key as string)}
+            />
+          
+            <Button
+              type="text"
+              size="small"
+              icon={weight > 0 ? <LikeOutlined style={{ color: '#52c41a' }} /> : <LikeOutlined />}
               onClick={() => onFooterButtonClick('like',content, info.key as string)}
             />
             <Button
