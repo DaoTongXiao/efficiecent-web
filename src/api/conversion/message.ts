@@ -47,6 +47,7 @@ export interface ApiMessage {
 export interface CreateMessage {
   conversation_id: string;           // 会话 ID
   knowledge_id?: string   
+  assistant_id?: number  
   role: string;                      // 作者角色
   name?: string;                     // 作者名称
   author_metadata?: {

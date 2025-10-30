@@ -15,7 +15,7 @@ export interface Report {
 
 // 助手相关类型定义
 export interface Assistant {
-  id: string;
+  id: number;
   name: string;
   description: string;
   prompt: string;

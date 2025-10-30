@@ -20,8 +20,8 @@ export interface AssistantState {
   // API Methods
   fetchAssistants: () => Promise<void>
   createAssistantAsync: (assistantData: AssistantRequest) => Promise<void>
-  updateAssistantAsync: (assistantId: string, assistantData: AssistantRequest) => Promise<void>
-  deleteAssistantAsync: (assistantId: string) => Promise<void>
+  updateAssistantAsync: (assistantId: number, assistantData: AssistantRequest) => Promise<void>
+  deleteAssistantAsync: (assistantId: number) => Promise<void>
   getAssistantByIdAsync: (assistantId: string) => Promise<void>
   searchAssistantsAsync: (name: string) => Promise<void>
 }
@@ -105,10 +105,10 @@ const useAssistantStore = create<AssistantState>()(
 
         // 先更新本地状态
         set((state) => {
-          const index = state.assistants.findIndex((a) => a.id === assistantId)
+          const index = state.assistants.findIndex((a) => a.id == assistantId)
           if (index !== -1) {
             state.assistants[index] = { ...state.assistants[index], ...assistantData }
-            if (state.curAssistant && state.curAssistant.id === assistantId) {
+            if (state.curAssistant && state.curAssistant.id == assistantId) {
               state.curAssistant = { ...state.curAssistant, ...assistantData }
             }
           }

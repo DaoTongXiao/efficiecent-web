@@ -1,6 +1,6 @@
 import { getAuthToken, isTokenValid } from '@/utils/auth'
 import { createMessage, chatMessage, ApiMessage as Message } from '@/api/conversion/message'
-import { useConversationStore, useKnowledgeStore } from '@/store'
+import { useAssistantStore, useConversationStore, useKnowledgeStore } from '@/store'
 import { App } from 'antd'
 import type { NotificationInstance } from 'antd/es/notification/interface'
 import { useCallback } from 'react'
@@ -80,6 +80,7 @@ export const useChatSubmission = () => {
   } = useConversationStore()
 
   const { curKnowledge  } = useKnowledgeStore()
+  const { curAssistant } = useAssistantStore()
 
   const submitMessage = useCallback(
     async (val: string) => {
@@ -102,6 +103,7 @@ export const useChatSubmission = () => {
         const userMsg = await createMessage({
           conversation_id: curConversation,
           knowledge_id: curKnowledge?.id,
+          assistant_id: curAssistant?.id,
           role: 'user',
           status: 'success',
           content_type: 'text',
@@ -136,6 +138,7 @@ export const useChatSubmission = () => {
         const aiResponse = await chatMessage({
           conversation_id: curConversation,
           knowledge_id: curKnowledge?.id,
+          assistant_id: curAssistant?.id,
           role: 'ai',
           status: 'success',
           content_type: 'text',

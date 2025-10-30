@@ -34,14 +34,14 @@ export const getAssistantById = async (assistantId: string): Promise<ApiResponse
 
 // 更新助手
 export const updateAssistant = async (
-  assistantId: string,
+  assistantId: number,
   data: AssistantRequest
 ): Promise<ApiResponse<Assistant>> => {
   return api.put<Assistant>(`/assistants/${assistantId}`, data)
 }
 
 // 删除助手
-export const deleteAssistant = async (assistantId: string): Promise<ApiResponse<void>> => {
+export const deleteAssistant = async (assistantId: number): Promise<ApiResponse<void>> => {
   return api.delete(`/assistants/${assistantId}`)
 }
 
