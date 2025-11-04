@@ -13,6 +13,7 @@ interface KnowledgeManagementProps {
   onCreate: () => void
   onEdit: (knowledge: Knowledge) => void
   onSelect: (knowledge: Knowledge) => void
+  onAddFragment: (knowledge: Knowledge) => void
 }
 
 const KnowledgeManagement: React.FC<KnowledgeManagementProps> = ({
@@ -23,7 +24,8 @@ const KnowledgeManagement: React.FC<KnowledgeManagementProps> = ({
   onToggleExpanded,
   onCreate,
   onEdit,
-  onSelect
+  onSelect,
+  onAddFragment
 }) => {
   return (
     <div className={styles.section}>
@@ -59,19 +61,32 @@ const KnowledgeManagement: React.FC<KnowledgeManagementProps> = ({
               <List.Item
                 className={`${styles.knowledgeItem} ${isSelected ? 'selected' : ''}`}
                 onClick={() => onSelect(item)}
-                actions={curKnowledge ? [
+                actions={[
                   <Button
-                    key="edit"
+                    key="add"
                     type="text"
                     size="small"
-                    icon={<EditOutlined />}
+                    icon={<PlusOutlined />}
                     onClick={(e) => {
                       e.stopPropagation()
-                      onEdit(curKnowledge)
+                      onAddFragment(item)
                     }}
-                    title="编辑知识库"
-                  />
-                ] : []}
+                    title="添加知识片段"
+                  />,
+                  ...(curKnowledge?.id === item.id ? [
+                    <Button
+                      key="edit"
+                      type="text"
+                      size="small"
+                      icon={<EditOutlined />}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onEdit(curKnowledge)
+                      }}
+                      title="编辑知识库"
+                    />
+                  ] : [])
+                ]}
               >
                 <List.Item.Meta
                   avatar={<DatabaseOutlined />}

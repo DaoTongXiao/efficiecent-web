@@ -14,6 +14,8 @@ import AssistantManagement from './AssistantManagement'
 import KnowledgeModal from './KnowledgeModal'
 import AssistantModal from './AssistantModal'
 import SelectKnowledgeModal from './SelectKnowledgeModal'
+import KnowledgeFragmentModal from './KnowledgeFragmentModal'
+import { instertKnowledge } from '@/api/conversion/message'
 
 interface ChatSiderProps {
   styles: Record<string, string>
@@ -35,8 +37,10 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   const [knowledgeModalVisible, setKnowledgeModalVisible] = useState(false)
   const [assistantModalVisible, setAssistantModalVisible] = useState(false)
   const [selectKnowledgeModalVisible, setSelectKnowledgeModalVisible] = useState(false)
+  const [fragmentModalVisible, setFragmentModalVisible] = useState(false)
   const [editingKnowledge, setEditingKnowledge] = useState<Knowledge | null>(null)
   const [editingAssistant, setEditingAssistant] = useState<Assistant | null>(null)
+  const [selectedKnowledgeForFragment, setSelectedKnowledgeForFragment] = useState<Knowledge | null>(null)
   const [knowledgeExpanded, setKnowledgeExpanded] = useState(true)
   const [assistantExpanded, setAssistantExpanded] = useState(true)
 
@@ -162,6 +166,36 @@ const ChatSider: React.FC<ChatSiderProps> = ({
     setCurKnowledge(knowledge)
     setSelectKnowledgeModalVisible(false)
   }
+
+  // 处理添加知识片段
+  const handleAddFragment = (knowledge: Knowledge) => {
+    setSelectedKnowledgeForFragment(knowledge)
+    setFragmentModalVisible(true)
+  }
+
+  // 处理知识片段Modal确认
+  const handleFragmentModalOk = async (content: string) => {
+    if (!selectedKnowledgeForFragment) return
+    try {
+      await instertKnowledge({
+        collection_name: `k_${selectedKnowledgeForFragment.id?.replace(/-/g, '_')}`,
+        message_id: '',
+        content
+      })
+      message.success('知识片段插入成功')
+      setFragmentModalVisible(false)
+      setSelectedKnowledgeForFragment(null)
+    } catch (error) {
+      console.error('插入知识片段失败:', error)
+      message.error('插入知识片段失败')
+    }
+  }
+
+  // 处理知识片段Modal取消
+  const handleFragmentModalCancel = () => {
+    setFragmentModalVisible(false)
+    setSelectedKnowledgeForFragment(null)
+  }
   
   /**
    * 创建会话
@@ -234,6 +268,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
           setCurKnowledge(knowledge)
           console.log('选择知识库:', knowledge.name)
         }}
+        onAddFragment={handleAddFragment}
       />
 
       {/* 🌟 助手管理 */}
@@ -296,6 +331,13 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         knowledges={knowledges}
         onSelect={handleSelectKnowledge}
         onCancel={handleSelectKnowledgeModalCancel}
+      />
+
+      {/* 🌟 知识片段Modal */}
+      <KnowledgeFragmentModal
+        visible={fragmentModalVisible}
+        onOk={handleFragmentModalOk}
+        onCancel={handleFragmentModalCancel}
       />
     </div>
   )
