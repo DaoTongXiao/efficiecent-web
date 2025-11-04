@@ -13,6 +13,7 @@ import KnowledgeManagement from './KnowledgeManagement'
 import AssistantManagement from './AssistantManagement'
 import KnowledgeModal from './KnowledgeModal'
 import AssistantModal from './AssistantModal'
+import SelectKnowledgeModal from './SelectKnowledgeModal'
 
 interface ChatSiderProps {
   styles: Record<string, string>
@@ -33,6 +34,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   const { assistants,curAssistant, fetchAssistants, createAssistantAsync, updateAssistantAsync,setCurAssistant } = useAssistantStore()
   const [knowledgeModalVisible, setKnowledgeModalVisible] = useState(false)
   const [assistantModalVisible, setAssistantModalVisible] = useState(false)
+  const [selectKnowledgeModalVisible, setSelectKnowledgeModalVisible] = useState(false)
   const [editingKnowledge, setEditingKnowledge] = useState<Knowledge | null>(null)
   const [editingAssistant, setEditingAssistant] = useState<Assistant | null>(null)
   const [knowledgeExpanded, setKnowledgeExpanded] = useState(true)
@@ -148,6 +150,17 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   const handleAssistantModalCancel = () => {
     setAssistantModalVisible(false)
     setEditingAssistant(null)
+  }
+
+  // 处理选择知识库Modal取消
+  const handleSelectKnowledgeModalCancel = () => {
+    setSelectKnowledgeModalVisible(false)
+  }
+
+  // 处理选择知识库
+  const handleSelectKnowledge = (knowledge: Knowledge) => {
+    setCurKnowledge(knowledge)
+    setSelectKnowledgeModalVisible(false)
   }
   
   /**
@@ -275,6 +288,14 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         editingAssistant={editingAssistant}
         onOk={handleAssistantModalOk}
         onCancel={handleAssistantModalCancel}
+      />
+
+      {/* 🌟 选择知识库Modal */}
+      <SelectKnowledgeModal
+        visible={selectKnowledgeModalVisible}
+        knowledges={knowledges}
+        onSelect={handleSelectKnowledge}
+        onCancel={handleSelectKnowledgeModalCancel}
       />
     </div>
   )

@@ -1,48 +1,35 @@
 import { notification } from 'antd'
 import { getAuthToken, isTokenValid } from '@/utils/auth'
-import { ApiMessage, chatMessage, instertKnowledge } from '@/api/conversion/message'
-import { useConversationStore, useKnowledgeStore, useUserStore } from '@/store'
+import { ApiMessage, chatMessage } from '@/api/conversion/message'
+import { useConversationStore } from '@/store'
 
 export const useMessageActions = () => {
-   const [api] = notification.useNotification()
+    const [api] = notification.useNotification()
 
-  const { messages, updateMessage } = useConversationStore() // selector只取需要的
+   const { messages, updateMessage } = useConversationStore() // selector只取需要的
 
 
   const handleMessageAction = async (
-    key: string,
-    messageId: string,
-    _content: React.ReactElement<{ message: ApiMessage }>
-  ) => {
-    const currentMessage = messages.find((m) => m.id === messageId)
-    if (!currentMessage) return
+     key: string,
+     messageId: string,
+     _content: React.ReactElement<{ message: ApiMessage }>
+   ) => {
+     const currentMessage = messages.find((m) => m.id === messageId)
+     if (!currentMessage) return
 
-    if (key === 'like') {
-      const newWeight = (currentMessage?.weight ?? 0) <= 0 ? 1 : ((currentMessage?.weight ?? 0) + 1)
-      updateMessage(messageId, { ...currentMessage, weight: newWeight }, true)
-    } else if (key === 'unlike') {
-      const newWeight = (currentMessage?.weight ?? 0) >= 0 ? -1 : ((currentMessage?.weight ?? 0) - 1)
-      updateMessage(messageId, { ...currentMessage, weight: newWeight }, true)
-    } else if (key === 'reload') {
-      await handleReload(currentMessage, messageId)
-    } else if (key === 'addVector') {
-      const knowledge = useKnowledgeStore.getState().curKnowledge
-      const user_id = useUserStore.getState().user_info?.user_id
-      if(knowledge){
-       await instertKnowledge({
-        collection_name: `k_${knowledge.id?.replace(/-/g, '_')}`,
-        message_id: messageId,
-        content: currentMessage.parts[0]?.toString(),
-        meatadata: {
-          conversation_id: currentMessage.conversation_id,
-          message_id: currentMessage.id,
-          user_id: user_id as string
-        }
-       })
-       updateMessage(messageId, { ...currentMessage, collect: 1 }, true)
-      }
-    }
-  }
+     if (key === 'like') {
+       const newWeight = (currentMessage?.weight ?? 0) <= 0 ? 1 : ((currentMessage?.weight ?? 0) + 1)
+       updateMessage(messageId, { ...currentMessage, weight: newWeight }, true)
+     } else if (key === 'unlike') {
+       const newWeight = (currentMessage?.weight ?? 0) >= 0 ? -1 : ((currentMessage?.weight ?? 0) - 1)
+       updateMessage(messageId, { ...currentMessage, weight: newWeight }, true)
+     } else if (key === 'reload') {
+       await handleReload(currentMessage, messageId)
+     } else if (key === 'addVector') {
+       // 这个逻辑现在在 ChatList 组件中处理，不在这里处理
+       // 保留空实现以避免错误
+     }
+   }
 
   const handleReload = async (currentMessage: ApiMessage, messageId: string) => {
     const token = getAuthToken()

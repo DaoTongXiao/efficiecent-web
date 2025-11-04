@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useEffect } from 'react'
+import React, { useCallback, useMemo, useRef, useEffect, useState } from 'react'
 import { Bubble } from '@ant-design/x'
 import { Button, GetProp, Space, Spin } from 'antd'
 import Welcome from '@/components/ZhWelcome/Welcome'
@@ -14,6 +14,11 @@ import { Avatar } from '@/components/ZhAvatar/Avatar'
 import { RolesType } from '@ant-design/x/es/bubble/BubbleList'
 import { MessageType} from '@/types/typing'
 import { Message } from '@/components/ZhMessage/Message'
+import SelectKnowledgeModal from './SelectKnowledgeModal'
+import { useKnowledgeStore, useUserStore, useConversationStore } from '@/store'
+import { instertKnowledge } from '@/api/conversion/message'
+import { notification } from 'antd'
+import { Knowledge } from '@/api/knowledges'
 
 export type ChatListProps = {
   styles: Record<string, string>
@@ -34,6 +39,65 @@ const ChatList: React.FC<ChatListProps> = ({
   onFooterButtonClick
 }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
+  const [selectKnowledgeModalVisible, setSelectKnowledgeModalVisible] = useState(false)
+  const [pendingMessageId, setPendingMessageId] = useState<string>('')
+  const [pendingMessageContent, setPendingMessageContent] = useState<React.ReactElement | null>(null)
+
+  const { knowledges } = useKnowledgeStore()
+  const { user_info } = useUserStore()
+  const { updateMessage } = useConversationStore()
+  const [api] = notification.useNotification()
+
+  const handleAddVector = async (content: React.ReactElement, messageId: string) => {
+    const currentMessage = messages.find(m => m.id === messageId)
+    if (!currentMessage) return
+
+    // 检查是否有知识库
+    if (knowledges.length === 0) {
+      api.error({ message: '没有可用的知识库，请先创建知识库' })
+      return
+    }
+
+    // 设置待处理的消息信息
+    setPendingMessageId(messageId)
+    setPendingMessageContent(content)
+    setSelectKnowledgeModalVisible(true)
+  }
+
+  const handleSelectKnowledge = async (knowledge: Knowledge) => {
+    if (!pendingMessageId || !pendingMessageContent) return
+
+    const currentMessage = messages.find(m => m.id === pendingMessageId)
+    if (!currentMessage) return
+
+    try {
+      await instertKnowledge({
+        collection_name: `k_${knowledge.id?.replace(/-/g, '_')}`,
+        message_id: pendingMessageId,
+        content: currentMessage.parts[0]?.toString(),
+        meatadata: {
+          conversation_id: currentMessage.conversation_id,
+          message_id: currentMessage.id,
+          user_id: user_info?.user_id as string
+        }
+      })
+      updateMessage(pendingMessageId, { ...currentMessage, collect: 1 }, true)
+      api.success({ message: '知识库插入成功' })
+    } catch (error) {
+      console.error('插入知识库失败:', error)
+      api.error({ message: '插入知识库失败，请重试' })
+    }
+
+    setSelectKnowledgeModalVisible(false)
+    setPendingMessageId('')
+    setPendingMessageContent(null)
+  }
+
+  const handleSelectKnowledgeModalCancel = () => {
+    setSelectKnowledgeModalVisible(false)
+    setPendingMessageId('')
+    setPendingMessageContent(null)
+  }
 
   /**
    * 滚动到底部
@@ -97,7 +161,7 @@ const ChatList: React.FC<ChatListProps> = ({
               size="small"
               disabled={Boolean(message?.collect && message.collect > 0)}
               icon={<StarOutlined style={{ color: message?.collect && message.collect > 0 ? '#1890ff' : undefined }} />}
-              onClick={() => onFooterButtonClick('addVector', content, info.key as string)}
+              onClick={() => handleAddVector(content, info.key as string)}
             />
           
             <Button
@@ -165,6 +229,13 @@ const ChatList: React.FC<ChatListProps> = ({
         </Space>
       )}
 
+      {/* 选择知识库Modal */}
+      <SelectKnowledgeModal
+        visible={selectKnowledgeModalVisible}
+        knowledges={knowledges}
+        onSelect={handleSelectKnowledge}
+        onCancel={handleSelectKnowledgeModalCancel}
+      />
     </div>
   )
 }

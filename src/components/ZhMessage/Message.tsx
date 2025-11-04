@@ -85,18 +85,18 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
     case 'text':
     case 'markdown':
     case 'md':
-      let processedParts: string[] = [];
+      { let processedParts: string[] = []
       if (Array.isArray(parts)) {
-        processedParts = parts.map(item => typeof item === 'string' ? item : JSON.stringify(item));
-        const lastPart = parts[parts.length - 1];
+        processedParts = parts.map(item => typeof item === 'string' ? item : JSON.stringify(item))
+        const lastPart = parts[parts.length - 1]
         if (typeof lastPart === 'object' && lastPart !== null && 'type' in lastPart && lastPart.type === 'rag_references' && 'data' in lastPart && Array.isArray(lastPart.data)) {
-          const ragList = lastPart.data.map((item: unknown) => `- ${String(item)}`).join('\n');
-          processedParts = [...processedParts.slice(0, -1), '\n\n**检索结果：**\n' + ragList];
+          const ragList = lastPart.data.map((item: unknown) => `- ${String(item)}`).join('\n')
+          processedParts = [...processedParts.slice(0, -1), '\n\n**检索结果：**\n' + ragList]
         }
       } else {
-        processedParts = [typeof parts === 'string' ? parts : JSON.stringify(parts)];
+        processedParts = [typeof parts === 'string' ? parts : JSON.stringify(parts)]
       }
-      return <MarkdownMessage content={processedParts} styles={styles} />
+      return <MarkdownMessage content={processedParts} styles={styles} /> }
     case 'obj':
       return <BatchResult body={parts} />
     case 'product_status':

@@ -65,6 +65,7 @@ const Layout: React.FC = () => {
     submitMessage(val) // 委托给hook
   }
 
+
   return (
     <div className={styles.layout}>
       <ChatSider
