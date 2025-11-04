@@ -17,12 +17,14 @@ export interface Report {
 export interface Assistant {
   id: number;
   name: string;
+  sort: number;
   description: string;
   prompt: string;
 }
 
 export interface AssistantRequest {
   name: string;
+  sort: number;
   description: string;
   prompt_text: string;
   created_by: string;

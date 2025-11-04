@@ -69,12 +69,13 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   }
 
   // 处理知识库Modal确认
-  const handleKnowledgeModalOk = async (values: { title: string; description: string }) => {
+  const handleKnowledgeModalOk = async (values: { title: string; description: string; sort: number }) => {
     try {
       if (editingKnowledge) {
         // 更新知识库
         const knowledgeData = {
           name: values.title,
+          sort: values.sort,
           description: values.description,
           created_by: String(user_info.user_id || ''),
           updated_by: String(user_info.user_id || '')
@@ -85,6 +86,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         // 创建知识库
         const knowledgeData = {
           name: values.title,
+          sort: values.sort,
           description: values.description,
           created_by: String(user_info.user_id || ''),
           updated_by: String(user_info.user_id || '')
@@ -101,12 +103,13 @@ const ChatSider: React.FC<ChatSiderProps> = ({
   }
 
   // 处理助手Modal确认
-  const handleAssistantModalOk = async (values: { title: string; description: string; prompt: string }) => {
+  const handleAssistantModalOk = async (values: { title: string; description: string; prompt: string; sort: number }) => {
     try {
       if (editingAssistant) {
         // 更新助手
         const assistantData = {
           name: values.title,
+          sort: values.sort,
           description: values.description,
           prompt_text: values.prompt,
           created_by: String(user_info.user_id || ''),
@@ -118,6 +121,7 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         // 创建助手
         const assistantData = {
           name: values.title,
+          sort: values.sort,
           description: values.description,
           prompt_text: values.prompt,
           created_by: String(user_info.user_id || ''),

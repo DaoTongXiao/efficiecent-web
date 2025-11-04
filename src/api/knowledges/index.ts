@@ -4,11 +4,13 @@ import { ApiResponse } from '@/api/request'
 export interface Knowledge {
     id: string;
     name: string;
+    sort: number;
     description: string;
 }
 
 export interface KnowledgeRequest {
     name: string;
+    sort: number;
     description: string;
     created_by: string;
     updated_by: string;

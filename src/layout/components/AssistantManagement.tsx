@@ -52,6 +52,7 @@ const AssistantManagement: React.FC<AssistantManagementProps> = ({
         <List
           size="small"
           dataSource={assistants}
+          style={assistants.length > 3 ? { maxHeight: '200px', overflowY: 'auto' } : {}}
           renderItem={(item) => {
             const isSelected = curAssistant?.id === item.id
             return (

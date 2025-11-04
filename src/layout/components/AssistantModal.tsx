@@ -6,7 +6,7 @@ import { Assistant } from '@/api/assistants'
 interface AssistantModalProps {
   visible: boolean
   editingAssistant: Assistant | null
-  onOk: (values: { title: string; description: string; prompt: string }) => void
+  onOk: (values: { title: string; description: string; prompt: string; sort: number }) => void
   onCancel: () => void
 }
 
@@ -24,7 +24,8 @@ const AssistantModal: React.FC<AssistantModalProps> = ({
       form.setFieldsValue({
         title: editingAssistant.name,
         description: editingAssistant.description,
-        prompt: editingAssistant.prompt
+        prompt: editingAssistant.prompt,
+        sort: editingAssistant.sort
       })
     } else if (visible) {
       form.resetFields()
@@ -63,7 +64,8 @@ const AssistantModal: React.FC<AssistantModalProps> = ({
         initialValues={{
           title: '',
           description: '',
-          prompt: ''
+          prompt: '',
+          sort: 0
         }}
       >
         <Form.Item
@@ -92,6 +94,13 @@ const AssistantModal: React.FC<AssistantModalProps> = ({
             placeholder="请输入助手的提示词"
             rows={4}
           />
+        </Form.Item>
+        <Form.Item
+          name="sort"
+          label="排序"
+          rules={[{ required: true, message: '请输入排序值' }]}
+        >
+          <Input type="number" placeholder="请输入排序值" />
         </Form.Item>
       </Form>
     </Modal>

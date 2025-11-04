@@ -52,6 +52,7 @@ const KnowledgeManagement: React.FC<KnowledgeManagementProps> = ({
         <List
           size="small"
           dataSource={knowledges}
+          style={knowledges.length > 3 ? { maxHeight: '200px', overflowY: 'auto' } : {}}
           renderItem={(item) => {
             const isSelected = curKnowledge?.id === item.id
             return (

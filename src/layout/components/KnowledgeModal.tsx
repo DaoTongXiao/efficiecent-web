@@ -6,7 +6,7 @@ import { Knowledge } from '@/api/knowledges'
 interface KnowledgeModalProps {
   visible: boolean
   editingKnowledge: Knowledge | null
-  onOk: (values: { title: string; description: string }) => void
+  onOk: (values: { title: string; description: string; sort: number }) => void
   onCancel: () => void
 }
 
@@ -23,7 +23,8 @@ const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
     if (visible && editingKnowledge) {
       form.setFieldsValue({
         title: editingKnowledge.name,
-        description: editingKnowledge.description
+        description: editingKnowledge.description,
+        sort: editingKnowledge.sort
       })
     } else if (visible) {
       form.resetFields()
@@ -61,7 +62,8 @@ const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
         layout="vertical"
         initialValues={{
           title: '',
-          description: ''
+          description: '',
+          sort: 0
         }}
       >
         <Form.Item
@@ -80,6 +82,13 @@ const KnowledgeModal: React.FC<KnowledgeModalProps> = ({
             placeholder="请输入知识库描述"
             rows={3}
           />
+        </Form.Item>
+        <Form.Item
+          name="sort"
+          label="排序"
+          rules={[{ required: true, message: '请输入排序值' }]}
+        >
+          <Input type="number" placeholder="请输入排序值" />
         </Form.Item>
       </Form>
     </Modal>
