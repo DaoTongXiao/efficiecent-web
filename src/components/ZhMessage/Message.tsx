@@ -3,6 +3,7 @@ import { ToolPart } from '@/api/conversion/message'
 
 import { BatchResult } from './BatchResult'
 import { MarkdownMessage } from './MarkdownMessage'
+import { SearchResults } from './SearchResults'
 
 
 type Props = {
@@ -86,21 +87,45 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
     case 'markdown':
     case 'md':
       { let processedParts: string[] = []
+      let searchResultsData: unknown[] | null = null
       if (Array.isArray(parts)) {
-        processedParts = parts.map(item => typeof item === 'string' ? item : JSON.stringify(item))
-        const lastPart = parts[parts.length - 1]
-        if (typeof lastPart === 'object' && lastPart !== null && 'type' in lastPart && lastPart.type === 'rag_references' && 'data' in lastPart && Array.isArray(lastPart.data)) {
-          const ragList = lastPart.data.map((item: unknown) => `- ${String(item)}`).join('\n')
-          processedParts = [...processedParts.slice(0, -1), '\n\n**检索结果：**\n' + ragList]
-        }
+        processedParts = parts.map(item => {
+          if (typeof item === 'object' && item !== null && 'type' in item) {
+            if (item.type === 'search_results' && 'data' in item && Array.isArray(item.data)) {
+              searchResultsData = item.data
+              return '' // 不添加到 processedParts
+            } else if (item.type === 'rag_references' && 'data' in item && Array.isArray(item.data)) {
+              const ragList = item.data.map((item: unknown) => `- ${String(item)}`).join('\n')
+              return '\n\n**检索结果：**\n' + ragList
+            } else {
+              return JSON.stringify(item)
+            }
+          } else {
+            return typeof item === 'string' ? item : JSON.stringify(item)
+          }
+        })
       } else {
         processedParts = [typeof parts === 'string' ? parts : JSON.stringify(parts)]
       }
-      return <MarkdownMessage content={processedParts} styles={styles} /> }
+      if (searchResultsData) {
+        return (
+          <div>
+            <MarkdownMessage content={processedParts} styles={styles} />
+            <SearchResults data={searchResultsData} />
+          </div>
+        )
+      } else {
+        return <MarkdownMessage content={processedParts} styles={styles} />
+      } }
     case 'obj':
       return <BatchResult body={parts} />
     case 'product_status':
       return renderParts(parts, styles, true) // ToolMode: true
+    case 'search_results':
+      if (typeof parts === 'object' && parts !== null && 'data' in parts && Array.isArray(parts.data)) {
+        return <SearchResults data={parts.data} />
+      }
+      return <p>无效的搜索结果数据</p>
     default:
       return renderText(parts)
   }

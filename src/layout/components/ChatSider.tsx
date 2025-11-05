@@ -265,7 +265,11 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         onCreate={handleCreateKnowledge}
         onEdit={handleEditKnowledge}
         onSelect={(knowledge) => {
-          setCurKnowledge(knowledge)
+          if (curKnowledge && curKnowledge.id === knowledge.id) {
+            setCurKnowledge(null)
+          } else {
+            setCurKnowledge(knowledge)
+          }
           console.log('选择知识库:', knowledge.name)
         }}
         onAddFragment={handleAddFragment}
@@ -281,7 +285,11 @@ const ChatSider: React.FC<ChatSiderProps> = ({
         onCreate={handleCreateAssistant}
         onEdit={handleEditAssistant}
         onSelect={(assistant) => {
-          setCurAssistant(assistant)
+          if (curAssistant && curAssistant.id === assistant.id) {
+            setCurAssistant(null)
+          } else {
+            setCurAssistant(assistant)
+          }
           console.log('选择助手:', assistant.name)
         }}
       />
