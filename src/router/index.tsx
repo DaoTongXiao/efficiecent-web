@@ -4,9 +4,9 @@ import Layout from '@/layout/Layout'
 import { Suspense } from 'react'
 
 // 懒加载页面组件
-const AssistantsPage = lazy(() => import('@/pages/AssistantsPage'))
-const ConversationsPage = lazy(() => import('@/pages/ConversationsPage'))
-const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
+const AssistantsPage = lazy(() => import('@/pages/chat/AssistantsPage'))
+const ConversationsPage = lazy(() => import('@/pages/chat/ConversationsPage'))
+const SettingsPage = lazy(() => import('@/pages/chat/SettingsPage'))
 
 /**
  * 创建路由器配置

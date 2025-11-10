@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
-import Header from './components/Header'
+import Header from './components/header/Header'
 import ToolBar from './components/toolbar/ToolBar'
 import SideBar from './components/sidebar/SideBar'
 import './Layout.scss'

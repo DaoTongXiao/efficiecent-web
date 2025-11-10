@@ -13,7 +13,7 @@
 .layout-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 60px 280px 1fr;
+  grid-template-columns: 45px 280px 1fr;
   border-top: 1px solid #eee;
   background: #f5f7fb;
   overflow: hidden;
@@ -34,7 +34,7 @@
 // Responsive design
 @media (max-width: 1024px) {
   .layout-body {
-    grid-template-columns: 60px 280px 1fr;
+    grid-template-columns: 40px 280px 1fr;
   }
 }
 
