@@ -20,6 +20,9 @@ export interface Assistant {
   sort: number;
   description: string;
   prompt: string;
+  prompt_text?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface AssistantRequest {

@@ -1,0 +1,306 @@
+// Layout styles
+
+.layout {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ant-color-bg-container);
+  font-family: AlibabaPuHuiTi, var(--ant-font-family), sans-serif;
+  overflow: hidden;
+}
+
+.layout-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 60px 280px 1fr;
+  background: #f5f7fb;
+  overflow: hidden;
+}
+
+.toolbar {
+  background-color: #ffffff;
+  border-right: 1px solid var(--ant-color-border-secondary);
+}
+
+.sider {
+  background-color: #ffffff;
+  border-right: 1px solid var(--ant-color-border-secondary);
+  border-top-left-radius: 10px;
+  overflow: hidden;
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .layout-body {
+    grid-template-columns: 60px 280px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .sider {
+    display: none;
+  }
+}
+
+// sider 样式
+.sider {
+  background: var(--ant-color-bg-layout)80;
+  width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 0 24px;
+  box-sizing: border-box;
+  gap: 8px;
+  margin: 24px 0;
+
+  span {
+    font-weight: bold;
+    color: var(--ant-color-text);
+    font-size: 16px;
+  }
+}
+
+.addBtn {
+  background: #1677ff0f;
+  border: 1px solid #1677ff34;
+  height: 40px;
+}
+
+// 🌟 知识库管理区域
+.section {
+  padding: 12px 0;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--ant-color-border-secondary);
+}
+
+// 🌟 知识库标题区域 - 图标和标题同一行
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 8px;
+
+  h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ant-color-text);
+  }
+}
+
+// 🌟 知识库列表项 - 可选中，高亮显示
+.knowledgeItem {
+  padding: 8px 12px !important;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: var(--ant-color-bg-text-hover);
+  }
+
+  // 🌟 选中状态高亮
+  &:global(.selected) {
+    background-color: var(--ant-color-primary-bg);
+    border-color: var(--ant-color-primary-border);
+  }
+
+  .ant-list-item-meta {
+    align-items: center;
+  }
+
+  .ant-list-item-meta-avatar {
+    margin-right: 8px;
+  }
+
+  // 🌟 标题不换行，超出省略
+  .ant-list-item-meta-title {
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // 🌟 描述不换行，超出省略
+  .ant-list-item-meta-description {
+    font-size: 12px;
+    color: var(--ant-color-text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .ant-list-item-meta-content {
+    overflow: hidden;
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+.conversations {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 12px;
+  padding: 0;
+
+  .ant-conversations-list {
+    padding-inline-start: 0;
+  }
+}
+
+.siderFooter {
+  border-top: 1px solid var(--ant-color-border-secondary);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// chat container 样式（保留用于ChatContainer组件）
+.chat {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--ant-padding-lg);
+  gap: 16px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.chatPrompt {
+  .ant-prompts-label {
+    color: #000000e0 !important;
+  }
+  .ant-prompts-desc {
+    color: #000000a6 !important;
+    width: 100%;
+  }
+  .ant-prompts-icon {
+    color: #000000a6 !important;
+  }
+}
+
+.chatList {
+  flex: 1;
+  overflow: auto;
+  padding: 0 145px;
+}
+
+.loadingMessage {
+  background-image: linear-gradient(
+    90deg,
+    #ff6b23 0%,
+    #af3cb8 31%,
+    #53b6ff 89%
+  );
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+
+.placeholder {
+  padding-top: 32px;
+}
+
+// sender 样式
+.sender {
+  width: 100%;
+  margin: 0 auto;
+  max-width: calc(100% - 290px);
+}
+
+.speechButton {
+  font-size: 18px;
+  color: var(--ant-color-text) !important;
+}
+
+.senderPrompt {
+  width: 100%;
+  margin: 0 auto;
+  max-width: calc(100% - 290px);
+  color: var(--ant-color-text);
+}
+
+.mdContainer {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  pre code {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin: 16px 0;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px #d0d7de;
+  }
+
+  th {
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #d0d7de;
+    border-right: 1px solid #d0d7de;
+    padding: 6px 13px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  th:last-child {
+    border-right: none;
+  }
+
+  td {
+    border-bottom: 1px solid #d0d7de;
+    border-right: 1px solid #d0d7de;
+    padding: 6px 13px;
+    text-align: left;
+  }
+
+  td:last-child {
+    border-right: none;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}

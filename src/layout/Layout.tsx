@@ -1,98 +1,81 @@
 import React, { useState, useEffect } from 'react'
-import ChatList from './components/ChatList'
-import ChatSender from './components/sender/Sender'
-import ChatSider from './components/ChatSider'
-import { zhCN } from '@/locales/locales'
-import { useStyle } from './style'
+import { useNavigate, useLocation, Outlet } from 'react-router-dom'
+import Header from './components/Header'
+import ToolBar from './components/toolbar/ToolBar'
+import SideBar from './components/sidebar/SideBar'
+import './Layout.scss'
 import { useConversationStore, useUserStore } from '@/store'
-import { useChatSubmission } from '@/hooks/useChatSubmission' // 新增
-import { useMessageActions } from '@/hooks/useMessageActions' // 新增
-import { ApiMessage } from '@/api/conversion/message'
-
-const locales = zhCN
 
 const Layout: React.FC = () => {
-  const { styles } = useStyle()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { user_info } = useUserStore()
-  const {
-    conversations,
-    curConversation,
-    inputValue,
-    loading,
-    initializeConversations
-  } = useConversationStore()
+  const { initializeConversations } = useConversationStore()
 
-  // 提取的hooks
-  const { submitMessage } = useChatSubmission()
-  const { handleMessageAction } = useMessageActions()
+  // 根据路由设置activeTab
+  const getActiveTabFromPath = (path: string): 'assistants' | 'conversations' | 'settings' => {
+    if (path.includes('/assistants')) return 'assistants'
+    if (path.includes('/settings')) return 'settings'
+    return 'conversations'
+  }
 
-  const [eventType, setEventType] = useState('')
+  const [activeTab, setActiveTab] = useState<'assistants' | 'conversations' | 'settings'>(
+    getActiveTabFromPath(location.pathname)
+  )
 
   // 改进：监听user_id变化，确保初始化
   useEffect(() => {
     const userId = user_info.user_id
     if (userId) {
       initializeConversations(userId)
-    
-  }}, [user_info.user_id, initializeConversations]) // 稳定依赖
+    }
+  }, [user_info.user_id, initializeConversations])
 
-  // 简化：直接用store的setInputValue（假设它支持函数式更新）
-  const handleSetInputValue = (value: string | ((prev: string) => string)) => {
-    if (typeof value === 'function') {
-      useConversationStore.setState((state) => ({ inputValue: value(state.inputValue) }))
-    } else {
-      useConversationStore.setState({ inputValue: value })
+  // 工具栏事件处理
+  const handleNewChat = () => {
+    console.log('新建对话')
+    navigate('/conversations')
+  }
+
+  const handleSettings = () => {
+    navigate('/settings')
+  }
+
+  const handleThemeToggle = () => {
+    console.log('切换主题')
+    // TODO: 实现主题切换逻辑
+  }
+
+  // Tab切换处理 - 使用路由导航
+  const handleTabChange = (key: string) => {
+    const tabKey = key as typeof activeTab
+    setActiveTab(tabKey)
+    switch (tabKey) {
+      case 'assistants':
+        navigate('/assistants')
+        break
+      case 'settings':
+        navigate('/settings')
+        break
+      default:
+        navigate('/conversations')
     }
   }
 
-  // 简化事件处理
-  const onPromptClick = (key: string) => {
-    console.log('onPromptClick', key)
-    setEventType(key)
-    console.log('onPromptClick', key)
-    // 移除console.log，提升生产DX
-  }
-
-  const onFooterButtonClick = (
-    key: string,
-    _content: React.ReactElement<{ message: ApiMessage }>,
-    info: unknown
-  ) => {
-    handleMessageAction(key, info as string, _content) // 委托给hook
-  }
-
-  const onSubmit = (val: string) => {
-    submitMessage(val) // 委托给hook
-  }
-
-
   return (
-    <div className={styles.layout}>
-      <ChatSider
-        styles={styles}
-        conversations={conversations}
-        curConversation={curConversation}
-        locales={locales}
-      />
-
-      <div className={styles.chat}>
-        <ChatList
-          styles={styles}
-          messages={useConversationStore((s) => s.messages)} // selector优化，避免全store订阅
-          onFooterButtonClick={onFooterButtonClick}
-          onPromptClick={onPromptClick}
-          onSubmit={onSubmit}
+    <div className="layout">
+      <Header />
+      <div className="layout-body">
+        <ToolBar
+          onNewChat={handleNewChat}
+          onSettings={handleSettings}
+          onThemeToggle={handleThemeToggle}
         />
-        <ChatSender
-          styles={styles}
-          eventType={eventType}
-          locales={locales}
-          loading={loading}
-          inputValue={inputValue}
-          onSubmit={onSubmit}
-          setInputValue={handleSetInputValue}
-          promptItemOnClick={onPromptClick}
-        />
+        <SideBar activeTab={activeTab} onTabChange={handleTabChange} />
+        {/* 使用 Outlet 渲染子路由 */}
+        <div className="main-content">
+          <Outlet />
+        </div>
       </div>
     </div>
   )

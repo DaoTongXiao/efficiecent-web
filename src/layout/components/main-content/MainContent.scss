@@ -1,0 +1,59 @@
+.main-content {
+  flex: 1;
+  height: 100%;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .assistant-view,
+  .settings-view {
+    height: 100%;
+    padding: 24px;
+    overflow: auto;
+
+    .ant-card {
+      height: 100%;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .main-content {
+    .chat-container {
+      padding: 12px;
+      gap: 12px;
+    }
+
+    .assistant-view,
+    .settings-view {
+      padding: 16px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    .chat-container {
+      padding: 8px;
+      gap: 8px;
+    }
+
+    .assistant-view,
+    .settings-view {
+      padding: 12px;
+    }
+  }
+}
