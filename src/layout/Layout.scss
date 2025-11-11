@@ -13,7 +13,7 @@
 .layout-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 45px 280px 1fr;
+  grid-template-columns: 45px 1fr;
   border-top: 1px solid #eee;
   background: #f5f7fb;
   overflow: hidden;
@@ -42,6 +42,10 @@
   .layout-body {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
+  }
+
+  .resizable-panel-group {
+    display: none;
   }
 
   .sider {
@@ -300,6 +304,41 @@
   td:last-child {
     border-right: none;
   }
+// 可拖拽面板样式
+.resizable-panel-group {
+  display: contents;
+}
+
+.resize-handle {
+  width: 4px;
+  background: transparent;
+  transition: background-color 0.2s ease;
+  cursor: col-resize;
+  position: relative;
+
+  &:hover {
+    background: var(--ant-color-border-secondary);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 20px;
+    background: var(--ant-color-border-secondary);
+    border-radius: 1px;
+  }
+}
+
+.sidebar-panel,
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
   tr:last-child td {
     border-bottom: none;

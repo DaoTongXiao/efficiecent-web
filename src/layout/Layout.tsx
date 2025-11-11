@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import Header from './components/header/Header'
 import ToolBar from './components/toolbar/ToolBar'
 import SideBar from './components/sidebar/SideBar'
@@ -71,11 +72,17 @@ const Layout: React.FC = () => {
           onSettings={handleSettings}
           onThemeToggle={handleThemeToggle}
         />
-        <SideBar activeTab={activeTab} onTabChange={handleTabChange} />
-        {/* 使用 Outlet 渲染子路由 */}
-        <div className="main-content">
-          <Outlet />
-        </div>
+        <PanelGroup direction="horizontal" className="resizable-panel-group">
+          <Panel defaultSize={30} minSize={20} maxSize={40} className="sidebar-panel">
+            <SideBar activeTab={activeTab} onTabChange={handleTabChange} />
+          </Panel>
+          <PanelResizeHandle className="resize-handle" />
+          <Panel defaultSize={70} className="main-panel">
+            <div className="main-content">
+              <Outlet />
+            </div>
+          </Panel>
+        </PanelGroup>
       </div>
     </div>
   )

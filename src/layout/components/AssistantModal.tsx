@@ -6,7 +6,12 @@ import { Assistant } from '@/api/assistants'
 interface AssistantModalProps {
   visible: boolean
   editingAssistant: Assistant | null
-  onOk: (values: { title: string; description: string; prompt: string; sort: number }) => void
+  onOk: (values: {
+    title: string
+    description: string
+    prompt: string
+    sort: number
+  }) => void
   onCancel: () => void
 }
 
@@ -80,20 +85,14 @@ const AssistantModal: React.FC<AssistantModalProps> = ({
           label="助手描述"
           rules={[{ required: true, message: '请输入助手描述' }]}
         >
-          <Input.TextArea
-            placeholder="请输入助手描述"
-            rows={3}
-          />
+          <Input.TextArea placeholder="请输入助手描述" rows={3} />
         </Form.Item>
         <Form.Item
           name="prompt"
           label="提示词"
           rules={[{ required: true, message: '请输入提示词' }]}
         >
-          <Input.TextArea
-            placeholder="请输入助手的提示词"
-            rows={4}
-          />
+          <Input.TextArea placeholder="请输入助手的提示词" rows={4} />
         </Form.Item>
         <Form.Item
           name="sort"
