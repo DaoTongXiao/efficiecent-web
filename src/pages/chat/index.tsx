@@ -2,35 +2,15 @@ import SideBar from '@/components/sidebar/SideBar'
 import './index.scss'
 import { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import ChatContainer from './sub/ConversationsPage'
 const ChatPage = () => {
-  // Tab切换处理 - 使用路由导航
-  // 根据路由设置activeTab
-  const navigate = useNavigate()
-  const location = useLocation()
-  const getActiveTabFromPath = (
-    path: string
-  ): 'assistants' | 'conversations' | 'settings' => {
-    if (path.includes('/assistants')) return 'assistants'
-    if (path.includes('/settings')) return 'settings'
-    return 'conversations'
-  }
   const [activeTab, setActiveTab] = useState<
     'assistants' | 'conversations' | 'settings'
-  >(getActiveTabFromPath(location.pathname))
+  >('conversations')
+
   const handleTabChange = (key: string) => {
     const tabKey = key as typeof activeTab
     setActiveTab(tabKey)
-    switch (tabKey) {
-      case 'assistants':
-        navigate('/chat/assistants')
-        break
-      case 'settings':
-        navigate('/chat/settings')
-        break
-      default:
-        navigate('/chat/conversations')
-    }
   }
   return (
     <div className="chat-page">
@@ -46,7 +26,7 @@ const ChatPage = () => {
         <PanelResizeHandle className="resize-handle" />
         <Panel defaultSize={80} className="main-panel">
           <div className="main-content">
-            <Outlet />
+            <ChatContainer />
           </div>
         </Panel>
       </PanelGroup>

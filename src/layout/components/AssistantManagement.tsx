@@ -1,4 +1,10 @@
-import { PlusOutlined, EditOutlined, RobotOutlined, DownOutlined, RightOutlined } from '@ant-design/icons'
+import {
+  PlusOutlined,
+  EditOutlined,
+  RobotOutlined,
+  DownOutlined,
+  RightOutlined
+} from '@ant-design/icons'
 import { Button, List, Tooltip } from 'antd'
 import React from 'react'
 
@@ -28,7 +34,14 @@ const AssistantManagement: React.FC<AssistantManagementProps> = ({
   return (
     <div className={styles.section}>
       <div className={styles.sectionHeader}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%'
+          }}
+        >
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Button
               type="text"
@@ -52,26 +65,34 @@ const AssistantManagement: React.FC<AssistantManagementProps> = ({
         <List
           size="small"
           dataSource={assistants}
-          style={assistants.length > 3 ? { maxHeight: '200px', overflowY: 'auto' } : {}}
+          style={
+            assistants.length > 3
+              ? { maxHeight: '200px', overflowY: 'auto' }
+              : {}
+          }
           renderItem={(item) => {
             const isSelected = curAssistant?.id === item.id
             return (
               <List.Item
                 className={`${styles.assistantItem} ${isSelected ? 'selected' : ''}`}
                 onClick={() => onSelect(item)}
-                actions={curAssistant ? [
-                  <Button
-                    key="edit"
-                    type="text"
-                    size="small"
-                    icon={<EditOutlined />}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onEdit(curAssistant)
-                    }}
-                    title="编辑助手"
-                  />
-                ] : []}
+                actions={
+                  curAssistant
+                    ? [
+                        <Button
+                          key="edit"
+                          type="text"
+                          size="small"
+                          icon={<EditOutlined />}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onEdit(curAssistant)
+                          }}
+                          title="编辑助手"
+                        />
+                      ]
+                    : []
+                }
               >
                 <List.Item.Meta
                   avatar={<RobotOutlined />}

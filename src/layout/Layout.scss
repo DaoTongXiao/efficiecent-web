@@ -194,17 +194,7 @@
 }
 
 // chat container 样式（保留用于ChatContainer组件）
-.chat {
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  padding-block: var(--ant-padding-lg);
-  gap: 16px;
-  max-width: 1300px;
-  margin: 0 auto;
-}
+
 
 .chatPrompt {
   .ant-prompts-label {
@@ -219,11 +209,7 @@
   }
 }
 
-.chatList {
-  flex: 1;
-  overflow: auto;
-  padding: 0 145px;
-}
+
 
 .loadingMessage {
   background-image: linear-gradient(
@@ -241,12 +227,6 @@
   padding-top: 32px;
 }
 
-// sender 样式
-.sender {
-  width: 100%;
-  margin: 0 auto;
-  max-width: calc(100% - 290px);
-}
 
 .speechButton {
   font-size: 18px;

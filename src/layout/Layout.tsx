@@ -23,7 +23,7 @@ const Layout: React.FC = () => {
   // 工具栏事件处理
   const handleNewChat = () => {
     console.log('新建对话')
-    navigate('/conversations')
+    navigate('/chat')
   }
 
   const handleSettings = () => {

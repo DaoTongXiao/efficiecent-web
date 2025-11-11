@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ChatList from '@/layout/components/ChatList'
-import ChatSender from '@/layout/components/sender/Sender'
+import ChatSender from '@/components/sender/Sender'
 import { zhCN } from '@/locales/locales'
 import { useConversationStore } from '@/store'
 import { useChatSubmission } from '@/hooks/useChatSubmission'
@@ -40,24 +40,52 @@ const ChatContainer: React.FC = () => {
   }
 
   return (
-    <div className="chat-container">
-      <ChatList
-        styles={{}} // TODO: 从Layout传递样式
-        messages={messages}
-        onFooterButtonClick={onFooterButtonClick}
-        onPromptClick={onPromptClick}
-        onSubmit={onSubmit}
-      />
-      <ChatSender
-        styles={{}} // TODO: 从Layout传递样式
-        eventType={eventType}
-        locales={zhCN}
-        loading={loading}
-        inputValue={inputValue}
-        onSubmit={onSubmit}
-        setInputValue={handleSetInputValue}
-        promptItemOnClick={onPromptClick}
-      />
+    <div
+      className="chat-page"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box'
+      }}
+    >
+      <div
+        className="chat-container"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          paddingBlock: 'var(--ant-padding-lg)',
+          boxSizing: 'border-box',
+          maxWidth: '1300px',
+          margin: '0 auto'
+        }}
+      >
+        <ChatList
+          styles={{
+            chatList: 'chatList',
+            placeholder: 'placeholder'
+          }}
+          messages={messages}
+          onFooterButtonClick={onFooterButtonClick}
+          onPromptClick={onPromptClick}
+          onSubmit={onSubmit}
+        />
+        <div>
+          <ChatSender
+            styles={{
+              sender: 'sender',
+              senderPrompt: 'senderPrompt'
+            }}
+            eventType={eventType}
+            locales={zhCN}
+            loading={loading}
+            inputValue={inputValue}
+            onSubmit={onSubmit}
+            setInputValue={handleSetInputValue}
+            promptItemOnClick={onPromptClick}
+          />
+        </div>
+      </div>
     </div>
   )
 }
