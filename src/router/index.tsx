@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { createBrowserRouter } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 import Layout from '@/layout/Layout'
 import { Suspense } from 'react'
 
@@ -11,7 +11,7 @@ const SettingsPage = lazy(() => import('@/pages/chat/SettingsPage'))
 /**
  * 创建路由器配置
  */
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: '/',
     Component: Layout,
