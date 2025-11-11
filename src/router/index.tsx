@@ -1,12 +1,15 @@
 import { lazy } from 'react'
-import { createHashRouter } from 'react-router-dom'
+import { createHashRouter, Navigate } from 'react-router-dom'
 import Layout from '@/layout/Layout'
+import ChatPage from '@/pages/chat'
 import { Suspense } from 'react'
 
 // 懒加载页面组件
-const AssistantsPage = lazy(() => import('@/pages/chat/AssistantsPage'))
-const ConversationsPage = lazy(() => import('@/pages/chat/ConversationsPage'))
-const SettingsPage = lazy(() => import('@/pages/chat/SettingsPage'))
+const AssistantsPage = lazy(() => import('@/pages/chat/sub/AssistantsPage'))
+const ConversationsPage = lazy(
+  () => import('@/pages/chat/sub/ConversationsPage')
+)
+const SettingsPage = lazy(() => import('@/pages/chat/sub/SettingsPage'))
 
 /**
  * 创建路由器配置
@@ -18,43 +21,45 @@ export const router = createHashRouter([
     children: [
       {
         index: true,
-        Component: () => (
-          <Suspense fallback={<div>Loading...</div>}>
-            <ConversationsPage />
-          </Suspense>
-        )
+        Component: () => <Navigate to="/chat/conversations" replace />
       },
       {
-        path: 'conversations',
-        Component: () => (
-          <Suspense fallback={<div>Loading...</div>}>
-            <ConversationsPage />
-          </Suspense>
-        )
-      },
-      {
-        path: 'assistants',
-        Component: () => (
-          <Suspense fallback={<div>Loading...</div>}>
-            <AssistantsPage />
-          </Suspense>
-        )
-      },
-      {
-        path: 'settings',
-        Component: () => (
-          <Suspense fallback={<div>Loading...</div>}>
-            <SettingsPage />
-          </Suspense>
-        )
+        path: 'chat',
+        Component: ChatPage,
+        children: [
+          {
+            index: true,
+            Component: () => <Navigate to="conversations" replace />
+          },
+          {
+            path: 'conversations',
+            Component: () => (
+              <Suspense fallback={<div>Loading...</div>}>
+                <ConversationsPage />
+              </Suspense>
+            )
+          },
+          {
+            path: 'assistants',
+            Component: () => (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AssistantsPage />
+              </Suspense>
+            )
+          },
+          {
+            path: 'settings',
+            Component: () => (
+              <Suspense fallback={<div>Loading...</div>}>
+                <SettingsPage />
+              </Suspense>
+            )
+          }
+        ]
       },
       {
         path: 'ai-web',
-        Component: () => (
-          <Suspense fallback={<div>Loading...</div>}>
-            <ConversationsPage />
-          </Suspense>
-        )
+        Component: () => <Navigate to="/chat/conversations" replace />
       }
     ]
   }

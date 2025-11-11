@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAssistantStore } from '@/store'
 import { Assistant } from '@/api/assistants'
-import AssistantManagement from '../../AssistantManagement'
+import AssistantManagement from '../../../layout/components/AssistantManagement'
 
 const AssistantTab: React.FC = () => {
   const { assistants, curAssistant, setCurAssistant } = useAssistantStore()

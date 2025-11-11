@@ -1,28 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation, Outlet } from 'react-router-dom'
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
+import React, { useEffect } from 'react'
+import { useNavigate, Outlet } from 'react-router-dom'
+
 import Header from './components/header/Header'
 import ToolBar from './components/toolbar/ToolBar'
-import SideBar from './components/sidebar/SideBar'
+
 import './Layout.scss'
 import { useConversationStore, useUserStore } from '@/store'
 
 const Layout: React.FC = () => {
   const navigate = useNavigate()
-  const location = useLocation()
   const { user_info } = useUserStore()
   const { initializeConversations } = useConversationStore()
-
-  // 根据路由设置activeTab
-  const getActiveTabFromPath = (path: string): 'assistants' | 'conversations' | 'settings' => {
-    if (path.includes('/assistants')) return 'assistants'
-    if (path.includes('/settings')) return 'settings'
-    return 'conversations'
-  }
-
-  const [activeTab, setActiveTab] = useState<'assistants' | 'conversations' | 'settings'>(
-    getActiveTabFromPath(location.pathname)
-  )
 
   // 改进：监听user_id变化，确保初始化
   useEffect(() => {
@@ -47,22 +35,6 @@ const Layout: React.FC = () => {
     // TODO: 实现主题切换逻辑
   }
 
-  // Tab切换处理 - 使用路由导航
-  const handleTabChange = (key: string) => {
-    const tabKey = key as typeof activeTab
-    setActiveTab(tabKey)
-    switch (tabKey) {
-      case 'assistants':
-        navigate('/assistants')
-        break
-      case 'settings':
-        navigate('/settings')
-        break
-      default:
-        navigate('/conversations')
-    }
-  }
-
   return (
     <div className="layout">
       <Header />
@@ -72,17 +44,9 @@ const Layout: React.FC = () => {
           onSettings={handleSettings}
           onThemeToggle={handleThemeToggle}
         />
-        <PanelGroup direction="horizontal" className="resizable-panel-group">
-          <Panel defaultSize={30} minSize={20} maxSize={40} className="sidebar-panel">
-            <SideBar activeTab={activeTab} onTabChange={handleTabChange} />
-          </Panel>
-          <PanelResizeHandle className="resize-handle" />
-          <Panel defaultSize={70} className="main-panel">
-            <div className="main-content">
-              <Outlet />
-            </div>
-          </Panel>
-        </PanelGroup>
+        <div className="page-container">
+          <Outlet />
+        </div>
       </div>
     </div>
   )
