@@ -1,9 +1,9 @@
 import React from 'react'
 import { Tabs } from 'antd'
-import AssistantTab from './tabs/AssistantTab'
-import ConversationTab from './tabs/ConversationTab'
-import SettingsTab from './tabs/SettingsTab'
+import AssistantList from './tabs/Assistant'
+import ConversationTab from './tabs/Conversation'
 import './SideBar.scss'
+import KnowledgeList from './tabs/Knowledge'
 
 interface SideBarProps {
   activeTab: 'assistants' | 'conversations' | 'settings'
@@ -13,24 +13,24 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange }) => {
   const items = [
     {
+      key: 'konwledge',
+      label: '知识库',
+      children: <KnowledgeList />
+    },
+    {
       key: 'assistants',
       label: '助手',
-      children: <AssistantTab />
+      children: <AssistantList />
     },
     {
       key: 'conversations',
       label: '话题',
       children: <ConversationTab />
-    },
-    {
-      key: 'settings',
-      label: '设置',
-      children: <SettingsTab />
     }
   ]
 
   return (
-    <div className="sidebar">
+    <div className="chat-sidebar">
       <Tabs
         activeKey={activeTab}
         onChange={onTabChange}

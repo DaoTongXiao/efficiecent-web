@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import Header from './components/header/Header'
 import ToolBar from './components/toolbar/ToolBar'
@@ -8,7 +8,7 @@ import './Layout.scss'
 import { useConversationStore, useUserStore } from '@/store'
 
 const Layout: React.FC = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const { user_info } = useUserStore()
   const { initializeConversations } = useConversationStore()
 
@@ -23,11 +23,11 @@ const Layout: React.FC = () => {
   // 工具栏事件处理
   const handleNewChat = () => {
     console.log('新建对话')
-    navigate('/chat')
+    // navigate('/chat')
   }
 
   const handleSettings = () => {
-    navigate('/settings')
+    // navigate('/settings')
   }
 
   const handleThemeToggle = () => {
