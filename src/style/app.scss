@@ -4,7 +4,7 @@
   height: 98vh;
   border-radius: 8px;
   display: flex;
-  background: var(--background-color);
+  // background: var(--background-color);
   font-family:
     AlibabaPuHuiTi,
     -apple-system,
@@ -40,54 +40,4 @@
 
 ::-webkit-scrollbar {
   display: none;
-}
-
-.chat {
-  width: 1000px;
-  max-width: 1000px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  gap: 16px;
-  justify-content: left;
-
-  .scroll-body {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    flex: 1;
-  }
-}
-
-.messages {
-  flex: 1;
-}
-
-.footer {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  background-attachment: scroll;
-  background-color: white;
-  background-image: linear-gradient(white 50px, white 50px);
-  background-origin: padding-box;
-  background-position-x: 0%;
-  background-position-y: 0%;
-  background-repeat: repeat;
-  background-size: auto;
-}
-
-.sender {
-  box-shadow: var(--box-shadow);
-}
-
-.addBtn {
-  background: #1677ff0f;
-  border: 1px solid #1677ff34;
-  width: calc(100% - 24px);
-  margin: 0 12px 24px 12px;
-}
-.selected{
-    background-color:#1677ff0f
 }

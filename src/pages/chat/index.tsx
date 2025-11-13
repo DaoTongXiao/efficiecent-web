@@ -2,7 +2,7 @@ import SideBar from '@/pages/chat/components/sidebar/SideBar'
 import './index.scss'
 import { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import ChatContainer from './components/ChatContainer'
+import ChatContainer from './components/chat-container/ChatContainer'
 const ChatPage = () => {
   const [activeTab, setActiveTab] = useState<
     'assistants' | 'conversations' | 'settings'

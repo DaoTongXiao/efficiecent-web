@@ -5,7 +5,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--ant-color-bg-container);
+  // background: var(--ant-color-bg-container);
   font-family: AlibabaPuHuiTi, var(--ant-font-family), sans-serif;
   overflow: hidden;
 }
@@ -15,7 +15,7 @@
   display: grid;
   grid-template-columns: 45px 1fr;
   border-top: 1px solid #eee;
-  background: #f5f7fb;
+  background: #fff;
   overflow: hidden;
 }
 
