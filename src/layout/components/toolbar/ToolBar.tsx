@@ -1,4 +1,5 @@
 import React from 'react'
+import { Tooltip } from 'antd'
 import {
   PlusOutlined,
   SettingOutlined,
@@ -20,22 +21,26 @@ const ToolBar: React.FC<ToolBarProps> = ({
 }) => {
   return (
     <div className="toolbar">
-      <div className="toolbar-btn" onClick={() => onNewChat?.()}>
-        <span className="toolbar-tooltip">助手</span>
-        <MessageOutlined />
-      </div>
-      <div className="toolbar-btn">
-        <span className="toolbar-tooltip">新建会话</span>
-        <PlusOutlined />
-      </div>
-      <div className="toolbar-btn" onClick={() => onSettings?.()}>
-        <span className="toolbar-tooltip">设置</span>
-        <SettingOutlined />
-      </div>
-      <div className="toolbar-btn" onClick={() => onThemeToggle?.()}>
-        <span className="toolbar-tooltip">切换主题</span>
-        <BulbOutlined />
-      </div>
+      <Tooltip title="助手" placement="right">
+        <div className="toolbar-btn" onClick={() => onNewChat?.()}>
+          <MessageOutlined />
+        </div>
+      </Tooltip>
+      <Tooltip title="新建会话" placement="right">
+        <div className="toolbar-btn">
+          <PlusOutlined />
+        </div>
+      </Tooltip>
+      <Tooltip title="设置" placement="right">
+        <div className="toolbar-btn" onClick={() => onSettings?.()}>
+          <SettingOutlined />
+        </div>
+      </Tooltip>
+      <Tooltip title="切换主题" placement="right">
+        <div className="toolbar-btn" onClick={() => onThemeToggle?.()}>
+          <BulbOutlined />
+        </div>
+      </Tooltip>
     </div>
   )
 }
