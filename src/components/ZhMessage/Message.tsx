@@ -1,10 +1,7 @@
 import { MessageType } from '@/types/typing'
 import { ToolPart } from '@/api/conversion/message'
-
-import { BatchResult } from './BatchResult'
 import { MarkdownMessage } from './MarkdownMessage'
 import { SearchResults } from './SearchResults'
-
 
 type Props = {
   message: MessageType
@@ -13,7 +10,8 @@ type Props = {
 
 // 类型守卫：检查 parts 是否为 ToolPart[]（用于 'product_status'）
 const isToolParts = (parts: unknown): parts is ToolPart[] =>
-  Array.isArray(parts) && parts.every((p) => typeof p === 'object' && 'category' in p && 'body' in p)
+  Array.isArray(parts) &&
+  parts.every((p) => typeof p === 'object' && 'category' in p && 'body' in p)
 
 // 通用文本渲染：处理简单字符串或数组
 const renderText = (parts: unknown, fallback = '无内容'): React.ReactNode => {
@@ -24,14 +22,20 @@ const renderText = (parts: unknown, fallback = '无内容'): React.ReactNode => 
   }
   // Fallback: 安全序列化，避免暴露结构
   try {
-    return <p>{typeof parts === 'object' ? JSON.stringify(parts) : String(parts)}</p>
+    return (
+      <p>{typeof parts === 'object' ? JSON.stringify(parts) : String(parts)}</p>
+    )
   } catch {
     return <p>{fallback}</p>
   }
 }
 
 // 渲染单个 ToolPart（提取自 'product_status' 的 switch）
-const renderToolPart = (part: ToolPart, index: number, styles?: Record<string, string>): React.ReactNode => {
+const renderToolPart = (
+  part: ToolPart,
+  index: number,
+  styles?: Record<string, string>
+): React.ReactNode => {
   const { category, body } = part
   const categoryLower = category?.toLowerCase() ?? 'str'
 
@@ -39,15 +43,6 @@ const renderToolPart = (part: ToolPart, index: number, styles?: Record<string, s
     case 'md':
     case 'markdown':
       return <MarkdownMessage key={index} content={[body]} styles={styles} />
-    case 'obj': {
-      let objBody: unknown
-      try {
-        objBody = typeof body === 'string' ? JSON.parse(body) : body
-      } catch {
-        objBody = body // Fallback to raw body if parse fails
-      }
-      return <BatchResult key={index} body={objBody} />
-    }
     case 'str':
     default:
       return <p key={index}>{body ?? ''}</p>
@@ -76,8 +71,10 @@ const renderParts = (
   return renderText(parts)
 }
 
-
-export const Message: React.FC<Props> = ({ message, styles }: Props): React.ReactNode => {
+export const Message: React.FC<Props> = ({
+  message,
+  styles
+}: Props): React.ReactNode => {
   const { content_type, parts } = message
   const typeLower = content_type?.toLowerCase() ?? 'str' // 默认 'str' 作为安全 fallback
   // console.log('message:', message)
@@ -85,17 +82,27 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
   switch (typeLower) {
     case 'text':
     case 'markdown':
-    case 'md':
-      { let processedParts: string[] = []
+    case 'md': {
+      let processedParts: string[] = []
       let searchResultsData: unknown[] | null = null
       if (Array.isArray(parts)) {
-        processedParts = parts.map(item => {
+        processedParts = parts.map((item) => {
           if (typeof item === 'object' && item !== null && 'type' in item) {
-            if (item.type === 'search_results' && 'data' in item && Array.isArray(item.data)) {
+            if (
+              item.type === 'search_results' &&
+              'data' in item &&
+              Array.isArray(item.data)
+            ) {
               searchResultsData = item.data
               return '' // 不添加到 processedParts
-            } else if (item.type === 'rag_references' && 'data' in item && Array.isArray(item.data)) {
-              const ragList = item.data.map((item: unknown) => `- ${String(item)}`).join('\n')
+            } else if (
+              item.type === 'rag_references' &&
+              'data' in item &&
+              Array.isArray(item.data)
+            ) {
+              const ragList = item.data
+                .map((item: unknown) => `- ${String(item)}`)
+                .join('\n')
               return '\n\n**检索结果：**\n' + ragList
             } else {
               return JSON.stringify(item)
@@ -105,7 +112,9 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
           }
         })
       } else {
-        processedParts = [typeof parts === 'string' ? parts : JSON.stringify(parts)]
+        processedParts = [
+          typeof parts === 'string' ? parts : JSON.stringify(parts)
+        ]
       }
       if (searchResultsData) {
         return (
@@ -116,13 +125,17 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
         )
       } else {
         return <MarkdownMessage content={processedParts} styles={styles} />
-      } }
-    case 'obj':
-      return <BatchResult body={parts} />
+      }
+    }
     case 'product_status':
       return renderParts(parts, styles, true) // ToolMode: true
     case 'search_results':
-      if (typeof parts === 'object' && parts !== null && 'data' in parts && Array.isArray(parts.data)) {
+      if (
+        typeof parts === 'object' &&
+        parts !== null &&
+        'data' in parts &&
+        Array.isArray(parts.data)
+      ) {
         return <SearchResults data={parts.data} />
       }
       return <p>无效的搜索结果数据</p>
@@ -130,4 +143,3 @@ export const Message: React.FC<Props> = ({ message, styles }: Props): React.Reac
       return renderText(parts)
   }
 }
-

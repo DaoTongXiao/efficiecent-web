@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
 import { defineConfig } from 'vite'
-
+import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   base: 'ai-web',
@@ -10,7 +10,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
     host: true, // host: "0.0.0.0"
     hmr: {
@@ -31,7 +31,7 @@ export default defineConfig({
         // target: 'http://172.18.88.61:8000',
         // target: 'http://172.18.88.141:8000',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/ai-api/, '')
+        rewrite: (path) => path.replace(/^\/ai-api/, '')
       }
     }
   }

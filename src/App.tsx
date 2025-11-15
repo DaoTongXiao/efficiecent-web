@@ -9,9 +9,7 @@ import {
   notification // 导入 notification 以使用 hook
 } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
-import '@/style/app.scss'
-
-
+import '@/style/app.css'
 
 /**
  * Application entry point

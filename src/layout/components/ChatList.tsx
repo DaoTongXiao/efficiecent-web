@@ -12,7 +12,7 @@ import {
 import { ApiMessage } from '@/api/conversion/message'
 import { Avatar } from '@/components/ZhAvatar/Avatar'
 import { RolesType } from '@ant-design/x/es/bubble/BubbleList'
-import { MessageType} from '@/types/typing'
+import { MessageType } from '@/types/typing'
 import { Message } from '@/components/ZhMessage/Message'
 import SelectKnowledgeModal from './SelectKnowledgeModal'
 import { useKnowledgeStore, useUserStore, useConversationStore } from '@/store'
@@ -21,10 +21,13 @@ import { notification } from 'antd'
 import { Knowledge } from '@/api/knowledges'
 
 export type ChatListProps = {
-  styles: Record<string, string>
   messages: MessageType[]
   onPromptClick: (type_str: string) => void
-  onFooterButtonClick: (key: string, content: React.ReactElement<{ message: ApiMessage }>, info: string) => void
+  onFooterButtonClick: (
+    key: string,
+    content: React.ReactElement<{ message: ApiMessage }>,
+    info: string
+  ) => void
   onSubmit: (val: string) => void
 }
 /**
@@ -33,23 +36,27 @@ export type ChatListProps = {
  * @returns {React.FC}
  */
 const ChatList: React.FC<ChatListProps> = ({
-  styles,
   messages,
   onPromptClick,
   onFooterButtonClick
 }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
-  const [selectKnowledgeModalVisible, setSelectKnowledgeModalVisible] = useState(false)
+  const [selectKnowledgeModalVisible, setSelectKnowledgeModalVisible] =
+    useState(false)
   const [pendingMessageId, setPendingMessageId] = useState<string>('')
-  const [pendingMessageContent, setPendingMessageContent] = useState<React.ReactElement | null>(null)
+  const [pendingMessageContent, setPendingMessageContent] =
+    useState<React.ReactElement | null>(null)
 
   const { knowledges } = useKnowledgeStore()
   const { user_info } = useUserStore()
   const { updateMessage } = useConversationStore()
   const [api] = notification.useNotification()
 
-  const handleAddVector = async (content: React.ReactElement, messageId: string) => {
-    const currentMessage = messages.find(m => m.id === messageId)
+  const handleAddVector = async (
+    content: React.ReactElement,
+    messageId: string
+  ) => {
+    const currentMessage = messages.find((m) => m.id === messageId)
     if (!currentMessage) return
 
     // 检查是否有知识库
@@ -67,7 +74,7 @@ const ChatList: React.FC<ChatListProps> = ({
   const handleSelectKnowledge = async (knowledge: Knowledge) => {
     if (!pendingMessageId || !pendingMessageContent) return
 
-    const currentMessage = messages.find(m => m.id === pendingMessageId)
+    const currentMessage = messages.find((m) => m.id === pendingMessageId)
     if (!currentMessage) return
 
     try {
@@ -123,8 +130,8 @@ const ChatList: React.FC<ChatListProps> = ({
    * 显示欢迎界面
    */
   const showWelcome = useCallback(() => {
-      return messages.length === 0
-  },[messages])
+    return messages.length === 0
+  }, [messages])
 
   /**
    * 排序后的消息列表
@@ -146,7 +153,7 @@ const ChatList: React.FC<ChatListProps> = ({
       placement: 'start',
       avatar: { icon: <Avatar role={RoleEnum.AI} /> },
       footer: (content, info) => {
-        const message = sortedMessages.find(m => m.id === info.key)
+        const message = sortedMessages.find((m) => m.id === info.key)
         const weight = message?.weight ?? 0
         return (
           <div style={{ display: 'flex' }}>
@@ -154,27 +161,54 @@ const ChatList: React.FC<ChatListProps> = ({
               type="text"
               size="small"
               icon={<ReloadOutlined />}
-              onClick={() => onFooterButtonClick('reload',content, info.key as string)}
+              onClick={() =>
+                onFooterButtonClick('reload', content, info.key as string)
+              }
             />
             <Button
               type="text"
               size="small"
               disabled={Boolean(message?.collect && message.collect > 0)}
-              icon={<StarOutlined style={{ color: message?.collect && message.collect > 0 ? '#1890ff' : undefined }} />}
+              icon={
+                <StarOutlined
+                  style={{
+                    color:
+                      message?.collect && message.collect > 0
+                        ? '#1890ff'
+                        : undefined
+                  }}
+                />
+              }
               onClick={() => handleAddVector(content, info.key as string)}
             />
-          
+
             <Button
               type="text"
               size="small"
-              icon={weight > 0 ? <LikeOutlined style={{ color: '#52c41a' }} /> : <LikeOutlined />}
-              onClick={() => onFooterButtonClick('like',content, info.key as string)}
+              icon={
+                weight > 0 ? (
+                  <LikeOutlined style={{ color: '#52c41a' }} />
+                ) : (
+                  <LikeOutlined />
+                )
+              }
+              onClick={() =>
+                onFooterButtonClick('like', content, info.key as string)
+              }
             />
             <Button
               type="text"
               size="small"
-              icon={weight < 0 ? <DislikeOutlined style={{ color: '#ff4d4f' }} /> : <DislikeOutlined />}
-              onClick={() => onFooterButtonClick('unlike',content, info.key as string)}
+              icon={
+                weight < 0 ? (
+                  <DislikeOutlined style={{ color: '#ff4d4f' }} />
+                ) : (
+                  <DislikeOutlined />
+                )
+              }
+              onClick={() =>
+                onFooterButtonClick('unlike', content, info.key as string)
+              }
             />
           </div>
         )
@@ -188,43 +222,34 @@ const ChatList: React.FC<ChatListProps> = ({
   }
 
   // parse message
-  const items: GetProp<typeof Bubble.List, 'items'>= sortedMessages.map(
-      (item) => {
-        const {id, status, role } = item
-        return {
-          key: id,
-          loading: status === 'loading',
-          role: role,
-          header: role === RoleEnum.AI ? '小智' : '你',
-          typing: { step: 2, interval: 50 },
-          content: (<Message message={item} styles={styles} />),
-          variant: 'filled'
-        }
+  const items: GetProp<typeof Bubble.List, 'items'> = sortedMessages.map(
+    (item) => {
+      const { id, status, role } = item
+      return {
+        key: id,
+        loading: status === 'loading',
+        role: role,
+        header: role === RoleEnum.AI ? '小智' : '你',
+        typing: { step: 2, interval: 50 },
+        content: <Message message={item} />,
+        variant: 'filled'
       }
-    )
+    }
+  )
   return (
     <div
       ref={chatContainerRef}
-      className={styles.chatList}
       style={{
         height: '100%',
         overflowY: 'auto',
         scrollBehavior: 'smooth'
       }}
     >
-      { !showWelcome() ? (
+      {!showWelcome() ? (
         /* 🌟 消息列表 */
-        <Bubble.List
-          items={items}
-          roles={roles}
-          autoScroll
-        />
+        <Bubble.List items={items} roles={roles} autoScroll />
       ) : (
-        <Space
-          direction="vertical"
-          size={16}
-          className={styles.placeholder}
-        >
+        <Space direction="vertical" size={16}>
           <Welcome onClickPrompt={onPromptClick} />
         </Space>
       )}
@@ -241,4 +266,3 @@ const ChatList: React.FC<ChatListProps> = ({
 }
 
 export default ChatList
-
