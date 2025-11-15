@@ -37,23 +37,43 @@ const useStyles = createStyles(({ css, token }) => ({
   `,
 
   editorWrapper: css`
-    position: relative;
     flex: 1;
     min-height: 0;
   `,
 
   editor: css`
-    font-family:
-      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    padding: 16px;
+    margin: 5px;
     height: 100%;
+    padding: 8px;
+    box-sizing: border-box;
     overflow-y: auto;
-    outline: none;
+    border-radius: 0 16px 16px 0;
+    // scrollbar-color: #cbd5e1 transparent; /* FF */
+    // scrollbar-width: thin; /* FF */
 
+    /* WebKit 滚动条 */
+    &::-webkit-scrollbar {
+      display: block !important;
+      width: 4px !important;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.08) !important; /* 更明显 */
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1 !important;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8 !important;
+    }
+    &::-webkit-scrollbar-button {
+      display: none !important;
+      width: 0;
+      height: 0;
+    }
     .ProseMirror {
       outline: none !important;
       border: none !important;
-
       &:focus {
         outline: none !important;
         border: none !important;
@@ -111,23 +131,6 @@ const useStyles = createStyles(({ css, token }) => ({
       li {
         margin: 4px 0;
       }
-    }
-
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
     }
   `,
 
