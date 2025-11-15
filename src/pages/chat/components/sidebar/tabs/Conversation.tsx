@@ -3,6 +3,7 @@ import { Conversations } from '@ant-design/x'
 import { useConversationStore } from '@/store'
 import { zhCN } from '@/locales/locales'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import './Conversation.scss'
 
 const ConversationTab: React.FC = () => {
   const {
@@ -42,20 +43,6 @@ const ConversationTab: React.FC = () => {
       <div
         className="create-conversation"
         onClick={onClickCreate}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          padding: '6px 8px',
-          margin: '0 8px 8px 8px',
-          borderRadius: 6,
-          fontSize: 13,
-          fontWeight: 500,
-          color: '#1677ff',
-          backgroundColor: '#f0f5ff',
-          cursor: 'pointer',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
-        }}
       >
         <PlusOutlined style={{ fontSize: 12 }} />
         新建对话
@@ -65,7 +52,6 @@ const ConversationTab: React.FC = () => {
         activeKey={curConversation}
         onActiveChange={handleActiveChange}
         groupable
-        styles={{ item: { padding: '0 8px' } }}
         items={conversations}
         menu={(conversation) => ({
           items: [

@@ -1,0 +1,36 @@
+.knowledge-list {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.knowledge-item {
+  cursor: pointer;
+}
+
+.knowledge-item.selected .knowledge-name {
+  font-weight: 600;
+  color: #1677ff;
+}
+
+.knowledge-index {
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 8px;
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.knowledge-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1f2933;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
