@@ -1,13 +1,13 @@
 import React from 'react'
 import { Conversations } from '@ant-design/x'
-import { useConversationStore } from '@/store'
+import { useConversationStore, useUserStore } from '@/store'
 import { zhCN } from '@/locales/locales'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import useConversationStyles from './ConversationStyle.ts'
 
 const ConversationTab: React.FC = () => {
   const { styles } = useConversationStyles()
-
+  const { user_info } = useUserStore()
   const {
     conversations,
     curConversation,
@@ -31,10 +31,10 @@ const ConversationTab: React.FC = () => {
       title: zhCN.newConversation ?? '新建会话',
       // 顶部按钮仅负责触发新会话，可传入占位 user_meta，避免前端类型错误
       user_meta: {
-        user_id: '',
-        user_name: '',
+        user_id: user_info.user_id ?? '',
+        user_name: user_info.user_name ?? '',
         prompt: '',
-        business_id: ''
+        business_id: user_info.business_id ?? ''
       }
     }
     await createConversationAsync(meta)
@@ -42,10 +42,7 @@ const ConversationTab: React.FC = () => {
 
   return (
     <div className={styles.conversationTab}>
-      <div
-        className="create-conversation"
-        onClick={onClickCreate}
-      >
+      <div className="create-conversation" onClick={onClickCreate}>
         <PlusOutlined style={{ fontSize: 12 }} />
         新建对话
       </div>

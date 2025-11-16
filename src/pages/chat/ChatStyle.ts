@@ -1,6 +1,6 @@
 import { createStyles } from 'antd-style'
 
-const useChatStyles = createStyles(({ css, token }) => ({
+const useChatStyles = createStyles(({ css }) => ({
   chatPage: css`
     display: flex;
     height: calc(-56px + 100vh);
@@ -11,7 +11,7 @@ const useChatStyles = createStyles(({ css, token }) => ({
       display: flex;
 
       & .resize-handle {
-        border: 1px solid ${token.colorBorder};
+        border: 1px solid rgba(255, 255, 255, 0.3);
       }
     }
   `

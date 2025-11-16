@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useEffect, useState } from 'react'
 import { Bubble } from '@ant-design/x'
-import { Button, GetProp, Space, Spin } from 'antd'
+import { Button, GetProp, Spin } from 'antd'
 import Welcome from '@/components/Welcome'
 import { RoleEnum } from '@/config/constant'
 import {
@@ -19,6 +19,7 @@ import { useKnowledgeStore, useUserStore, useConversationStore } from '@/store'
 import { instertKnowledge } from '@/api/conversion/message'
 import { notification } from 'antd'
 import { Knowledge } from '@/api/knowledges'
+import useChatListStyle from './ChatListStyle'
 
 export type ChatListProps = {
   messages: MessageType[]
@@ -51,6 +52,16 @@ const ChatList: React.FC<ChatListProps> = ({
   const { user_info } = useUserStore()
   const { updateMessage } = useConversationStore()
   const [api] = notification.useNotification()
+
+  const { styles } = useChatListStyle()
+  const {
+    chatContainer,
+    welcomeContainer,
+    footer,
+    collectedIcon,
+    likedIcon,
+    dislikedIcon
+  } = styles
 
   const handleAddVector = async (
     content: React.ReactElement,
@@ -156,7 +167,7 @@ const ChatList: React.FC<ChatListProps> = ({
         const message = sortedMessages.find((m) => m.id === info.key)
         const weight = message?.weight ?? 0
         return (
-          <div style={{ display: 'flex' }}>
+          <div className={footer}>
             <Button
               type="text"
               size="small"
@@ -171,12 +182,11 @@ const ChatList: React.FC<ChatListProps> = ({
               disabled={Boolean(message?.collect && message.collect > 0)}
               icon={
                 <StarOutlined
-                  style={{
-                    color:
-                      message?.collect && message.collect > 0
-                        ? '#1890ff'
-                        : undefined
-                  }}
+                  className={
+                    message?.collect && message.collect > 0
+                      ? collectedIcon
+                      : undefined
+                  }
                 />
               }
               onClick={() => handleAddVector(content, info.key as string)}
@@ -186,11 +196,7 @@ const ChatList: React.FC<ChatListProps> = ({
               type="text"
               size="small"
               icon={
-                weight > 0 ? (
-                  <LikeOutlined style={{ color: '#52c41a' }} />
-                ) : (
-                  <LikeOutlined />
-                )
+                <LikeOutlined className={weight > 0 ? likedIcon : undefined} />
               }
               onClick={() =>
                 onFooterButtonClick('like', content, info.key as string)
@@ -200,11 +206,9 @@ const ChatList: React.FC<ChatListProps> = ({
               type="text"
               size="small"
               icon={
-                weight < 0 ? (
-                  <DislikeOutlined style={{ color: '#ff4d4f' }} />
-                ) : (
-                  <DislikeOutlined />
-                )
+                <DislikeOutlined
+                  className={weight < 0 ? dislikedIcon : undefined}
+                />
               }
               onClick={() =>
                 onFooterButtonClick('unlike', content, info.key as string)
@@ -237,21 +241,14 @@ const ChatList: React.FC<ChatListProps> = ({
     }
   )
   return (
-    <div
-      ref={chatContainerRef}
-      style={{
-        height: '100%',
-        overflowY: 'auto',
-        scrollBehavior: 'smooth'
-      }}
-    >
+    <div ref={chatContainerRef} className={chatContainer}>
       {!showWelcome() ? (
         /* 🌟 消息列表 */
         <Bubble.List items={items} roles={roles} autoScroll />
       ) : (
-        <Space direction="vertical" size={16}>
+        <div className={welcomeContainer}>
           <Welcome onClickPrompt={onPromptClick} />
-        </Space>
+        </div>
       )}
 
       {/* 选择知识库Modal */}
