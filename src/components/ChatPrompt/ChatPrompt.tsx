@@ -1,4 +1,4 @@
-import { TypeEnum } from '../../config/constant'
+import { TypeEnum } from '../../config/constant.ts'
 import useChatPromptStyles from './style.ts'
 
 interface ChatPromptProps {

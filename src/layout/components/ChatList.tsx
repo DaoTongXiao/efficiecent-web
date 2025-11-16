@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useEffect, useState } from 'react'
 import { Bubble } from '@ant-design/x'
 import { Button, GetProp, Space, Spin } from 'antd'
-import Welcome from '@/components/ZhWelcome/Welcome'
+import Welcome from '@/components/Welcome'
 import { RoleEnum } from '@/config/constant'
 import {
   DislikeOutlined,
@@ -10,10 +10,10 @@ import {
   StarOutlined
 } from '@ant-design/icons'
 import { ApiMessage } from '@/api/conversion/message'
-import { Avatar } from '@/components/ZhAvatar/Avatar'
+import { Avatar } from '@/components/Avatar'
 import { RolesType } from '@ant-design/x/es/bubble/BubbleList'
 import { MessageType } from '@/types/typing'
-import { Message } from '@/components/ZhMessage/Message'
+import { Message } from '@/components/Message/Message'
 import SelectKnowledgeModal from './SelectKnowledgeModal'
 import { useKnowledgeStore, useUserStore, useConversationStore } from '@/store'
 import { instertKnowledge } from '@/api/conversion/message'
