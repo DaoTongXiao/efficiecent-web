@@ -13,9 +13,10 @@ interface ChatInputBoxProps {
   setInputValue: (value: string) => void
 }
 
-
-
-const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSubmit }) => {
+const ChatInputBox: React.FC<ChatInputBoxProps> = ({
+  onSubmit,
+  setInputValue
+}) => {
   const { styles } = useStyles()
 
   const editor = useEditor({
@@ -43,6 +44,11 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSubmit }) => {
       attributes: {
         style: 'outline: none; border: none;'
       }
+    },
+    onUpdate: ({ editor }) => {
+      const text = editor.getText().trim()
+      console.log('text', text)
+      setInputValue(text)
     }
   })
 
