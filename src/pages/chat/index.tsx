@@ -1,5 +1,5 @@
 import SideBar from '@/pages/chat/components/sidebar/SideBar'
-import useChatStyles from './style.ts'
+import useChatStyles from './ChatStyle.ts'
 import { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import ChatContainer from './components/chat-container'
