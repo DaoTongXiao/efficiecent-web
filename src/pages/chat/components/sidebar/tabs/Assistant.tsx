@@ -1,7 +1,7 @@
 import useAssistantStore from '@/store/assistantStore'
 import { List, Tooltip } from 'antd'
 import React, { useEffect } from 'react'
-import './Assistant.scss'
+import useAssistantStyles from './style.ts'
 
 const colorPalette = [
   '#1677ff',
@@ -17,6 +17,8 @@ const colorPalette = [
 ]
 
 const AssistantList: React.FC = () => {
+  const { styles } = useAssistantStyles()
+
   const { assistants, curAssistant, setCurAssistant, fetchAssistants } =
     useAssistantStore()
 
@@ -25,7 +27,7 @@ const AssistantList: React.FC = () => {
   }, [])
 
   return (
-    <div className="assistant-list">
+    <div className={styles.assistantList}>
       <List
         size="small"
         dataSource={assistants}
@@ -35,11 +37,11 @@ const AssistantList: React.FC = () => {
           const color = colorPalette[index % colorPalette.length]
           return (
             <List.Item
-              className={`assistant-item ${isSelected ? 'selected' : ''}`}
+              className={`${styles.assistantItem} ${isSelected ? 'selected' : ''}`}
               onClick={() => setCurAssistant(item)}
             >
               <div
-                className="assistant-index"
+                className={styles.assistantIndex}
                 style={{ background: color }}
               >
                 {index + 1}
@@ -47,7 +49,7 @@ const AssistantList: React.FC = () => {
               <List.Item.Meta
                 title={
                   <Tooltip title={item.name}>
-                    <div className="assistant-name">
+                    <div className={styles.assistantName}>
                       {item.name}
                     </div>
                   </Tooltip>

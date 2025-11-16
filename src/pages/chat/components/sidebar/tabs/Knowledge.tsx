@@ -1,7 +1,7 @@
 import useKnowledgeStore from '@/store/knowledgeStore'
 import { List, Tooltip } from 'antd'
 import React, { useEffect } from 'react'
-import './Knowledge.scss'
+import useKnowledgeStyles from './Knowledge/style'
 
 const colorPalette = [
   '#1677ff',
@@ -20,12 +20,14 @@ const KnowledgeList: React.FC = () => {
   const { knowledges, curKnowledge, setCurKnowledge, fetchKnowledges } =
     useKnowledgeStore()
 
+  const { styles } = useKnowledgeStyles()
+
   useEffect(() => {
     fetchKnowledges()
   }, [])
 
   return (
-    <div className="knowledge-list">
+    <div className={styles.knowledgeList}>
       <List
         size="small"
         dataSource={knowledges}
@@ -35,11 +37,11 @@ const KnowledgeList: React.FC = () => {
           const color = colorPalette[index % colorPalette.length]
           return (
             <List.Item
-              className={`knowledge-item ${isSelected ? 'selected' : ''}`}
+              className={`${styles.knowledgeItem} ${isSelected ? 'selected' : ''}`}
               onClick={() => setCurKnowledge(item)}
             >
               <div
-                className="knowledge-index"
+                className={styles.knowledgeIndex}
                 style={{ background: color }}
               >
                 {index + 1}
@@ -47,7 +49,7 @@ const KnowledgeList: React.FC = () => {
               <List.Item.Meta
                 title={
                   <Tooltip title={item.name}>
-                    <div className="knowledge-name">
+                    <div className={styles.knowledgeName}>
                       {item.name}
                     </div>
                   </Tooltip>

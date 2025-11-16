@@ -3,9 +3,11 @@ import { Conversations } from '@ant-design/x'
 import { useConversationStore } from '@/store'
 import { zhCN } from '@/locales/locales'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import './Conversation.scss'
+import useConversationStyles from './Conversation/style.ts'
 
 const ConversationTab: React.FC = () => {
+  const { styles } = useConversationStyles()
+
   const {
     conversations,
     curConversation,
@@ -39,7 +41,7 @@ const ConversationTab: React.FC = () => {
   }
 
   return (
-    <div className="conversation-tab">
+    <div className={styles.conversationTab}>
       <div
         className="create-conversation"
         onClick={onClickCreate}

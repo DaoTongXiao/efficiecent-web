@@ -1,5 +1,5 @@
 import { TypeEnum } from '../../config/constant'
-import './styles.scss'
+import useChatPromptStyles from './style.ts'
 
 interface ChatPromptProps {
   type: TypeEnum
@@ -11,10 +11,12 @@ interface ChatPromptProps {
 }
 
 const ChatPrompt = (props: ChatPromptProps) => {
+  const { styles } = useChatPromptStyles()
+
   return (
     <>
       <div
-        className="feature-card"
+        className={styles.featureCard}
         onClick={() => {
           if (props.onClick) {
             props.onClick(props.type, props.title)

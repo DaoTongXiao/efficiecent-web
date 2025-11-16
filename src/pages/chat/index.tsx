@@ -1,9 +1,11 @@
 import SideBar from '@/pages/chat/components/sidebar/SideBar'
-import './index.scss'
+import useChatStyles from './style.ts'
 import { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import ChatContainer from './components/chat-container'
 const ChatPage = () => {
+  const { styles } = useChatStyles()
+
   const [activeTab, setActiveTab] = useState<
     'assistants' | 'conversations' | 'settings'
   >('conversations')
@@ -13,7 +15,7 @@ const ChatPage = () => {
     setActiveTab(tabKey)
   }
   return (
-    <div className="chat-page">
+    <div className={styles.chatPage}>
       <PanelGroup direction="horizontal" className="resizable-panel-group">
         <Panel
           maxSize={25}

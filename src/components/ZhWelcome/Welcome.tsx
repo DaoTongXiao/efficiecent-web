@@ -1,5 +1,5 @@
 import { TypeEnum } from '@/config/constant'
-import './Welcome.scss'
+import useWelcomeStyles from './style.ts'
 import ai_logo from '@/assets/ai.png'
 interface WelcomeProps {
   onClickPrompt?: (type: TypeEnum, str: string) => void
@@ -10,9 +10,10 @@ interface WelcomeProps {
  * @returns React.FC
  */
 export default function WlecomeTitle(_props: WelcomeProps) {
+  const { styles } = useWelcomeStyles()
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <div className="chat-title">
         <div className="chat-hello">
           <img
