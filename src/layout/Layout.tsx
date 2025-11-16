@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import Header from './components/header/Header'
+import Header from '../components/header'
 import ToolBar from './components/toolbar/ToolBar'
 
-import './Layout.scss'
+import useStyles from './style'
 import { useConversationStore, useUserStore } from '@/store'
 
 const Layout: React.FC = () => {
@@ -35,10 +35,12 @@ const Layout: React.FC = () => {
     // TODO: 实现主题切换逻辑
   }
 
+  const { styles } = useStyles()
+
   return (
-    <div className="layout">
+    <div className={styles.layout}>
       <Header />
-      <div className="layout-body">
+      <div className={styles.layoutBody}>
         <ToolBar
           onNewChat={handleNewChat}
           onSettings={handleSettings}
