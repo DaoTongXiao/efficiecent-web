@@ -1,7 +1,7 @@
 import useKnowledgeStore from '@/store/knowledgeStore'
 import { List, Tooltip } from 'antd'
 import React, { useEffect } from 'react'
-import useKnowledgeStyles from './Knowledge/style'
+import useKnowledgeStyles from './KnowledgeStyle'
 
 const colorPalette = [
   '#1677ff',

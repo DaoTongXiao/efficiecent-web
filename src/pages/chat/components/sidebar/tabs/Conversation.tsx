@@ -3,7 +3,7 @@ import { Conversations } from '@ant-design/x'
 import { useConversationStore } from '@/store'
 import { zhCN } from '@/locales/locales'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import useConversationStyles from './Conversation/style.ts'
+import useConversationStyles from './ConversationStyle.ts'
 
 const ConversationTab: React.FC = () => {
   const { styles } = useConversationStyles()

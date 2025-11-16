@@ -1,7 +1,7 @@
 import useAssistantStore from '@/store/assistantStore'
 import { List, Tooltip } from 'antd'
 import React, { useEffect } from 'react'
-import useAssistantStyles from './style.ts'
+import useAssistantStyles from './SideBarStyle.ts'
 
 const colorPalette = [
   '#1677ff',
